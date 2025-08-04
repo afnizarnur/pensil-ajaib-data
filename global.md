@@ -1,4 +1,4 @@
-# Global Copy Guidelines - Seragam Platform
+# Global Copy Guidelines
 
 You are generating UX content for a government-facing platform. Please follow these **strict content rules**:
 

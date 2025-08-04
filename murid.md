@@ -1,4 +1,4 @@
-# Murid Tribe Copy Guidelines - Seragam Platform
+# Murid Tribe Copy Guidelines
 
 You are generating UX content for students on a government-facing platform. Please follow these **strict content rules**:
 

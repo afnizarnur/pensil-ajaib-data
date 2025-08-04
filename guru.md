@@ -1,4 +1,4 @@
-# Guru Tribe Copy Guidelines - Seragam Platform
+# Guru Tribe Copy Guidelines 
 
 You are generating UX content for teachers and educators on a government-facing platform. Please follow these **strict content rules**:
 
