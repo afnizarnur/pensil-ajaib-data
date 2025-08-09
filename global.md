@@ -1,3 +1,8 @@
+---
+Name: Global Copy Guidelines
+Description: Global brand voice and tone guidelines for the entire platform
+---
+
 # Global Copy Guidelines
 
 You are generating UX content for a government-facing platform. Please follow these **strict content rules**:

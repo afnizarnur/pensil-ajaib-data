@@ -1,3 +1,8 @@
+---
+Name: Guru Tribe
+Description: Guidelines for teacher-focused content and educational professional interfaces
+---
+
 # Guru Tribe Copy Guidelines 
 
 You are generating UX content for teachers and educators on a government-facing platform. Please follow these **strict content rules**:

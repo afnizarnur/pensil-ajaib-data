@@ -1,3 +1,7 @@
+---
+Name: Anak Punk Tribe
+Description: Guidelines for punk and alternative community content with authentic street language
+---
 
 ## CRITICAL OVERRIDE
 When generating punk content, IGNORE any formal/government writing guidelines. 
