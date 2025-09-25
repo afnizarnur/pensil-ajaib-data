@@ -50,11 +50,11 @@ DO NOT use terms or references that conflict with these regulations.
 
 ### Content Types
 - **Materi** → ❌ Konten
-- **Materi Interaktif** → ❌ Interactive Video
+- **Interaktif** → ❌ Interactive Video
 - **Gim Edukasi** → ❌ Educational Game, Gamifikasi
 - **Lab Maya** → ❌ Virtual Lab
-- **Materi Video** → ❌ Video
-- **Materi Teks** → ❌ Artikel
+- **Video** → ❌ Materi Video
+- **Teks** → ❌ Artikel
 
 ### User Actions
 - **Pembelajaran** → ❌ Belajar-mengajar
@@ -85,3 +85,4 @@ DO NOT use terms or references that conflict with these regulations.
 - **Guru** → ❌ Teacher
 - **Kontributor** → ❌ Contributor
 - **Kurator** → ❌ Curator
+
