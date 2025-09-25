@@ -15,12 +15,12 @@ _Last updated: 11 Sept 2025_
 
 ## 📚 Jenis Materi Pembelajaran  
 - [GLO-01] **Materi** → ❌ Konten ("Konten" terlalu umum)    
-- [GLO-02] **Materi Interaktif** → ❌ Interactive Video (materi dengan interaksi dua arah)    
+- [GLO-02] **Interaktif** → ❌ Interactive Video (materi dengan interaksi dua arah)   
 - [GLO-03] **Gim Edukasi** → ❌ Educational Game, Gamifikasi (permainan edukatif)    
 - [GLO-04] **Lab Maya** → ❌ Virtual Lab (laboratorium virtual)    
-- [GLO-05] **Materi Teks** → ❌ Artikel (materi utama berupa teks)    
-- [GLO-06] **Materi Gambar** → ❌ Artikel, Materi Visual (materi utama berupa gambar)    
-- [GLO-07] **Materi Video** → ❌ Video (materi utama berupa gambar bergerak)    
+- [GLO-05] **Teks** → ❌ Artikel (materi utama berupa teks)    
+- [GLO-06] **Gambar** → ❌ Artikel, Materi Visual (materi utama berupa gambar)    
+- [GLO-07] **Video** → ❌ Video (materi utama berupa gambar bergerak)    
 - [GLO-08] **Tahukah Kamu** → ❌ Did You Know (section tips/rekomendasi)    
 - [GLO-09] **Materi Terkait** → ❌ Related Content (materi yang berhubungan)  
 
@@ -176,4 +176,5 @@ _Last updated: 11 Sept 2025_
 ## 🗃 Lain-lain  
 - [GLO-94] **Alternatif, Pilihan** → ❌ Tambahan, tidak wajib    
 - [GLO-95] **Sekaligus** → ❌ Bulk
+
 
