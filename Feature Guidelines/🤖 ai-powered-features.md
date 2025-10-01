@@ -9,12 +9,12 @@ _Last updated: 11 Sept 2025_
 
 ## [AI-02] Mandatory Disclaimers  
 - Every AI-powered output MUST include this disclaimer:  
-  - **“Kecerdasan Buatan mungkin tidak sepenuhnya akurat. Guru dianjurkan untuk tetap memeriksa dan menyesuaikan dengan kebutuhan kelas.”**  
+  - **“Kecerdasan Artifisial mungkin tidak sepenuhnya akurat. Guru dianjurkan untuk tetap memeriksa dan menyesuaikan dengan kebutuhan kelas.”**  
 - DO NOT publish AI results without this warning.  
 
 ## [AI-03] Loading & Processing States  
 - All AI-powered loading states MUST describe the AI’s activity in plain, empathetic language.  
-  - ✅ Example: “Kecerdasan Buatan sedang menganalisis materi dan menyusun asesmen yang sesuai.”  
+  - ✅ Example: “Kecerdasan Artifisial sedang menganalisis materi dan menyusun asesmen yang sesuai.”  
   - ❌ DO NOT use generic system text like: “Processing…” / “Loading data…”  
 
 ## [AI-04] Error & Warning Messages  
@@ -27,7 +27,7 @@ _Last updated: 11 Sept 2025_
 ---
 
 ## [AI-05] Terminology for AI References  
-- You MUST ALWAYS use **“Kecerdasan Buatan (AI)”**.  
-- DO NOT use: “Kecerdasan Artifisial”, “Artificial Intelligence”, “AI”.  
-- You MUST consistently tag AI features with **“(dengan Kecerdasan Buatan)”** in navigation or menu items.  
+- You MUST ALWAYS use **“Kecerdasan Artifisial (AI)”**.  
+- DO NOT use: “Kecerdasan Buatan, “Artificial Intelligence”, “AI”.  
+- You MUST consistently tag AI features with **“(dengan Kecerdasan Artifisial)”** in navigation or menu items.  
 
