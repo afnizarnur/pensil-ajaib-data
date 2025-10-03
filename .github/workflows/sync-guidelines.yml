@@ -1,0 +1,213 @@
+name: Sync Guidelines to Cloudflare KV
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.md'
+      - '!README.md'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  sync:
+    name: Process and upload guidelines to KV
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Process and upload guidelines
+        env:
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_KV_NAMESPACE_ID: ${{ secrets.CF_KV_NAMESPACE_ID }}
+        run: |
+          echo "Processing guidelines..."
+
+          # Function to extract frontmatter
+          extract_frontmatter() {
+            local file="$1"
+            local key="$2"
+
+            # Extract frontmatter content between --- markers
+            frontmatter=$(sed -n '/^---$/,/^---$/p' "$file" | sed '1d;$d')
+
+            # Extract specific key value
+            echo "$frontmatter" | grep "^${key}:" | sed "s/^${key}:\s*//" | sed 's/^["'\'']\(.*\)["'\'']$/\1/'
+          }
+
+          # Function to strip frontmatter from content
+          strip_frontmatter() {
+            local file="$1"
+            # Remove everything between first --- and second ---
+            sed '1{/^---$/!q;};1,/^---$/d' "$file"
+          }
+
+          # Function to upload to KV
+          upload_to_kv() {
+            local key="$1"
+            local value="$2"
+
+            echo "Uploading $key to Cloudflare KV..."
+
+            response=$(curl -s -w "\n%{http_code}" -X PUT \
+              "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/storage/kv/namespaces/${CF_KV_NAMESPACE_ID}/values/${key}" \
+              -H "Authorization: Bearer ${CF_API_TOKEN}" \
+              -H "Content-Type: application/json" \
+              --data "$value")
+
+            http_code=$(echo "$response" | tail -n1)
+            body=$(echo "$response" | sed '$d')
+
+            if [ "$http_code" -ge 200 ] && [ "$http_code" -lt 300 ]; then
+              echo "✅ Successfully uploaded $key"
+            else
+              echo "❌ Failed to upload $key (HTTP $http_code)"
+              echo "$body"
+              exit 1
+            fi
+          }
+
+          # Process root-level markdown files
+          echo "Processing root-level guidelines..."
+          for file in *.md; do
+            # Skip README
+            if [ "$file" = "README.md" ]; then
+              continue
+            fi
+
+            if [ -f "$file" ]; then
+              filename=$(basename "$file" .md)
+
+              # Extract metadata
+              name=$(extract_frontmatter "$file" "name")
+              description=$(extract_frontmatter "$file" "description")
+
+              # Fallback to generated values if not in frontmatter
+              if [ -z "$name" ]; then
+                if [ "$filename" = "global" ]; then
+                  name="Global Copy Guidelines"
+                else
+                  # Convert kebab-case to Title Case
+                  name=$(echo "$filename" | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2));}1')
+                  name="$name Tribe"
+                fi
+              fi
+
+              if [ -z "$description" ]; then
+                case "$filename" in
+                  "global")
+                    description="Global brand voice and tone guidelines for the entire platform"
+                    ;;
+                  "murid")
+                    description="Guidelines for student-focused content"
+                    ;;
+                  "guru")
+                    description="Guidelines for teacher-focused content"
+                    ;;
+                  *)
+                    description="Guidelines for $filename content"
+                    ;;
+                esac
+              fi
+
+              # Strip frontmatter from content
+              content=$(strip_frontmatter "$file")
+
+              # Create JSON payload
+              json_payload=$(jq -n \
+                --arg id "$filename" \
+                --arg name "$name" \
+                --arg desc "$description" \
+                --arg content "$content" \
+                --arg updated "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+                '{
+                  id: $id,
+                  name: $name,
+                  description: $desc,
+                  content: $content,
+                  updatedAt: $updated
+                }')
+
+              # Upload to KV
+              upload_to_kv "guideline:$filename" "$json_payload"
+            fi
+          done
+
+          # Process guidelines in subdirectories
+          echo "Processing subdirectory guidelines..."
+          find . -type f -name "*.md" ! -name "README.md" ! -path "./.git/*" | while read -r file; do
+            # Skip if already processed (root level)
+            if [[ "$file" != ./*/* ]]; then
+              continue
+            fi
+
+            # Generate ID from path (e.g., ./Core Guidelines/01-foundation.md -> core-guidelines-01-foundation)
+            id=$(echo "$file" | sed 's|^\./||' | sed 's|/|-|g' | sed 's|\.md$||' | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
+
+            # Clean up ID (remove emojis and special characters)
+            id=$(echo "$id" | sed 's/[^a-z0-9-]//g' | sed 's/--*/-/g')
+
+            # Extract metadata
+            name=$(extract_frontmatter "$file" "name")
+            description=$(extract_frontmatter "$file" "description")
+
+            # Fallback to filename-based name
+            if [ -z "$name" ]; then
+              name=$(basename "$file" .md | sed 's/[0-9.-]*//g' | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2));}1')
+            fi
+
+            if [ -z "$description" ]; then
+              description="Guidelines from $(dirname "$file")"
+            fi
+
+            # Strip frontmatter from content
+            content=$(strip_frontmatter "$file")
+
+            # Create JSON payload
+            json_payload=$(jq -n \
+              --arg id "$id" \
+              --arg name "$name" \
+              --arg desc "$description" \
+              --arg content "$content" \
+              --arg path "$file" \
+              --arg updated "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+              '{
+                id: $id,
+                name: $name,
+                description: $desc,
+                content: $content,
+                path: $path,
+                updatedAt: $updated
+              }')
+
+            # Upload to KV
+            upload_to_kv "guideline:$id" "$json_payload"
+          done
+
+          # Create index of all guidelines
+          echo "Creating guidelines index..."
+          index_json=$(find . -type f -name "*.md" ! -name "README.md" ! -path "./.git/*" | while read -r file; do
+            if [[ "$file" == ./*/* ]]; then
+              id=$(echo "$file" | sed 's|^\./||' | sed 's|/|-|g' | sed 's|\.md$||' | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | sed 's/[^a-z0-9-]//g' | sed 's/--*/-/g')
+            else
+              id=$(basename "$file" .md)
+            fi
+
+            name=$(extract_frontmatter "$file" "name")
+            if [ -z "$name" ]; then
+              name=$(basename "$file" .md | sed 's/[0-9.-]*//g' | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2));}1')
+            fi
+
+            echo "{\"id\":\"$id\",\"name\":\"$name\"}"
+          done | jq -s '{guidelines: ., updatedAt: now | strftime("%Y-%m-%dT%H:%M:%SZ")}')
+
+          upload_to_kv "guidelines:index" "$index_json"
+
+          echo "✅ All guidelines synced successfully!"
