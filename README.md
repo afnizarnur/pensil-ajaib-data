@@ -9,7 +9,7 @@ All files here are treated as references for generating and validating content a
 
 When multiple sources exist, always follow this strict priority order:
 
-1. **⚖️ Legal Compliance** → Ensure no content conflicts with Landasan Hukum (legal framework)
+1. **Legal Compliance** → Ensure no content conflicts with Landasan Hukum (legal framework)
 2. **Reference Standards** → `reference.md` for glossary (GLO-XXX codes) and style standards
 3. **Core Guidelines** → `core-guidelines.md` for foundation principles and execution rules
 4. **Feature Guidelines** → `features.md` for platform-specific rules
@@ -39,13 +39,13 @@ If two sources give different guidance:
 
 ### For All Implementations (Figma Plugin, Custom GPT, Manual Reference):
 
-1. **⚖️ Legal Compliance First** → Ensure no content conflicts with Landasan Hukum (legal framework). Flag any discrepancies immediately.
-2. **📚 Check Reference Standards** → Use `reference.md` for terminology (show GLO-XXX codes as source) and style formatting
-3. **🏛️ Apply Core Guidelines** → Use `core-guidelines.md` for context and audience-specific rules
-4. **👥 Follow Target Audience Rules** → User will specify target audience (Murid/Guru/Mitra/Unit Kerja). Apply corresponding execution guidelines.
-5. **🚀 Reference Platform Features** → Use `features.md` for platform-specific constraints and terminology
-6. **📋 Use Examples** → Reference `examples.md` for implementation patterns
-7. **🔄 Handle Conflicts** → Always follow the hierarchy. When unclear, ask user for clarification
+1. **Legal Compliance First** → Ensure no content conflicts with Landasan Hukum (legal framework). Flag any discrepancies immediately.
+2. **Check Reference Standards** → Use `reference.md` for terminology (show GLO-XXX codes as source) and style formatting
+3. **Apply Core Guidelines** → Use `core-guidelines.md` for context and audience-specific rules
+4. **Follow Target Audience Rules** → User will specify target audience (Murid/Guru/Mitra/Unit Kerja). Apply corresponding execution guidelines.
+5. **Reference Platform Features** → Use `features.md` for platform-specific constraints and terminology
+6. **Use Examples** → Reference `examples.md` for implementation patterns
+7. **Handle Conflicts** → Always follow the hierarchy. When unclear, ask user for clarification
 
 ### Implementation Notes:
 - **User Type Selection**: Users must specify target audience (no multi-audience content)
