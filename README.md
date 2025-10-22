@@ -1,4 +1,5 @@
 # ✍️ KETIK — Copy Guidelines for Ruang Murid
+last updated 21 Oct
 
 This repository contains the **authoritative copy guidelines** for KETIK.
 All files here are treated as references for generating and validating content across Figma plugins and custom GPTs.
@@ -9,13 +10,15 @@ All files here are treated as references for generating and validating content a
 
 When multiple sources exist, always follow this strict priority order:
 
-1. **Legal Compliance** → Ensure no content conflicts with Landasan Hukum (legal framework)
-2. **Reference Standards** → `reference.md` for glossary (GLO-XXX codes) and style standards
-3. **Core Guidelines** → `core-guidelines.md` for foundation principles and execution rules
-4. **Feature Guidelines** → `features.md` for platform-specific rules
-5. **User-provided references** (links, published docs, or pasted material)
-6. **Examples** → `examples.md` for implementation patterns
-7. **Fallback principles** → clarity, empathy, inclusivity
+0. **⚖️ Legal Compliance** → Landasan Hukum (PP No. 57/2021, UU No. 20/2003, Permendikbudristek No. 8/2024, No. 119/2014) overrides ALL other rules
+1. **Reference Standards** → `Reference/style-standards.md`, `Reference/Glossary/ruang-murid.md`
+2. **Core Guidelines** → `Core Guidelines/general-foundation.md`, `Core Guidelines/ruang-murid-tribe/tribe.md`
+3. **Execution Rules** → `Core Guidelines/ruang-murid-tribe/user/murid.md`, `guru.md`, `mitra.md`, `unit-kerja.md`
+4. **Feature Guidelines** → `Feature Guidelines/ai-powered-features.md`
+5. **UI Components** → `Reference/ui-component-specs.md`, `Reference/error-templates.md`
+6. **User-provided references** (links, published docs, or pasted material)
+7. **Examples** → `Examples/component-copy-samples.md`, `dialog-examples.md`, `onboarding-samples.md`, `toast-message-library.md`
+8. **Fallback principles** → clarity, empathy, inclusivity
 
 ---
 
@@ -25,13 +28,15 @@ If two sources give different guidance:
 
 | Situation | Which Wins | What To Do |
 |-----------|------------|-------------|
-| Glossary vs Execution doc | **reference.md** | Use glossary term. Flag discrepancy if entirely different content. |
-| Style vs Execution doc | **reference.md** | Style overrides tone/voice. Adapt execution nuance if needed. |
-| Execution vs Foundation | **Execution doc** | Audience-specific rules override global foundation. |
-| Feature guideline vs Core | **Core Guidelines** | Foundation/tribe context wins unless feature introduces mandatory constraint. |
+| Legal vs Anything | **Legal Compliance (Priority 0)** | ⚠️ **CRITICAL**: Always follow Landasan Hukum. Immediately flag conflict in output with: "LEGAL CONFLICT DETECTED: [describe issue] - Following legal requirement over [conflicting source]" |
+| Glossary vs Execution doc | **Reference/Glossary/ruang-murid.md (Priority 1)** | Use glossary term. Flag discrepancy if entirely different content. |
+| Style vs Execution doc | **Reference/style-standards.md (Priority 1)** | Style overrides tone/voice. Adapt execution nuance if needed. |
+| Execution vs Foundation | **Execution doc (Priority 3)** | Audience-specific rules override global foundation. |
+| Feature vs Execution/Foundation | **Execution/Foundation (Priority 3/2)** | Use execution rules unless feature introduces legal/technical constraint. |
+| UI Component vs Other sources | **Follow hierarchy** | UI specs are Priority 5. Check higher priorities first. |
 | User-provided reference vs Repo guideline | **Repo guideline** | Follow repo guidelines. Flag discrepancy even if user reference is more recent. |
 | Example vs Reference doc | **Reference doc** | Examples are illustrative only. |
-| Incomplete/contradictory guidelines | **Rule Hierarchy** | Follow priority order. If still unclear, ask user for clarification. |
+| Incomplete/contradictory guidelines | **Rule Hierarchy** | Follow priority order (0-8). If still unclear, ask user for clarification. |
 
 ---
 
@@ -39,39 +44,56 @@ If two sources give different guidance:
 
 ### For All Implementations (Figma Plugin, Custom GPT, Manual Reference):
 
-1. **Legal Compliance First** → Ensure no content conflicts with Landasan Hukum (legal framework). Flag any discrepancies immediately.
-2. **Check Reference Standards** → Use `reference.md` for terminology (show GLO-XXX codes as source) and style formatting
-3. **Apply Core Guidelines** → Use `core-guidelines.md` for context and audience-specific rules
-4. **Follow Target Audience Rules** → User will specify target audience (Murid/Guru/Mitra/Unit Kerja). Apply corresponding execution guidelines.
-5. **Reference Platform Features** → Use `features.md` for platform-specific constraints and terminology
-6. **Use Examples** → Reference `examples.md` for implementation patterns
-7. **Handle Conflicts** → Always follow the hierarchy. When unclear, ask user for clarification
+1. **⚖️ Legal Compliance Gate (Priority 0)** → Verify content does not conflict with Landasan Hukum. **If conflict detected, MUST flag in output before proceeding.**
+2. **📚 Reference Standards (Priority 1)** → Use `Reference/Glossary/ruang-murid.md` (show GLO-XXX codes as source) and `Reference/style-standards.md` for formatting
+3. **🏛️ Core Guidelines (Priority 2)** → Apply `Core Guidelines/general-foundation.md` and `Core Guidelines/ruang-murid-tribe/tribe.md` for context
+4. **👥 Execution Rules (Priority 3)** → User specifies audience (Murid/Guru/Mitra/Unit Kerja). Use corresponding file in `Core Guidelines/ruang-murid-tribe/user/`
+5. **🚀 Feature Guidelines (Priority 4)** → Check `Feature Guidelines/ai-powered-features.md` for platform-specific constraints
+6. **🖥️ UI Components (Priority 5)** → Reference `Reference/ui-component-specs.md` and `Reference/error-templates.md` for technical specifications
+7. **📋 Examples (Priority 7)** → Use files in `Examples/` folder for implementation patterns
+8. **🔄 Handle Conflicts** → Follow the hierarchy table above. Always flag legal conflicts prominently.
 
 ### Implementation Notes:
+- **Legal Conflict Flagging**: Any discrepancy between legal requirements and other guidelines MUST be flagged in the output with clear explanation
 - **User Type Selection**: Users must specify target audience (no multi-audience content)
-- **Dynamic Content**: Handle case-by-case based on user prompts. Ask for clarification when needed.
+- **Dynamic Content**: Handle case-by-case based on user prompts. Ask for clarification when needed
 - **Character Limits**: Check UI component specifications for specific constraints
 - **Missing Files**: Inform users if required files are unavailable
-- **Source Citations**: Show all reference codes (GLO-XXX, etc.) as source documentation
+- **Source Citations**: Show all reference codes (GLO-XXX, Priority X, etc.) as source documentation
 
 ---
 
 ## 📁 Repository Structure
 
-### Core Guidelines
-- `core-guidelines.md` — Foundation principles, legal compliance, user personas, tone standards
+### 📂 Core Guidelines
+Foundation principles and execution rules:
+- 🏛️ `general-foundation.md` — Legal basis, core principles, tone standards
+- 📂 `ruang-murid-tribe/`
+  - 🎯 `tribe.md` — Platform context and tribal knowledge
+  - 📂 `user/`
+    - 😊 `murid.md` — Student-focused copy execution
+    - 👩‍🏫 `guru.md` — Teacher-focused copy execution  
+    - 🤝 `mitra.md` — Partner/contributor execution
+    - 🏢 `unit-kerja.md` — Work unit execution
 
-### Reference
-- `reference.md` — Complete glossary (GLO-001 to GLO-122) and style standards
+### 📂 Reference  
+Standards and terminology enforcement:
+- 📂 `Glossary/`
+  - 📚 `ruang-murid.md` — Complete terminology glossary (GLO-001 to GLO-122)
+- 🔧 `style-standards.md` — Formatting, time, currency rules
+- 🖥️ `ui-component-specs.md` — UI component specifications
+- 🚫 `error-templates.md` — Error message templates
 
-### Features
-- `features.md` — Platform-specific rules, feature terminology, technical constraints
+### 📂 Feature Guidelines
+Platform-specific rules:
+- 🤖 `ai-powered-features.md` — AI feature guidelines and constraints
 
-### Examples
-- `examples.md` — UI component library, dialogs, content samples for each user type
-
-### Support
-- `questions.md` — Question sets for different content creation scenarios
+### 📂 Examples
+Practical implementation samples:
+- 🎯 `onboarding-samples.md` — User onboarding flows
+- 💬 `dialog-examples.md` — Dialog and confirmation examples  
+- 📱 `toast-message-library.md` — Toast/snackbar message library
+- 📋 `component-copy-samples.md` — UI component copy samples
 
 ---
 
@@ -80,10 +102,11 @@ If two sources give different guidance:
 ### Version Control:
 - Repository commits track all changes
 - No date suffixes in filenames
-- Follow consistent naming conventions
+- Branch-based updates for major revisions
 
 ### Quality Assurance:
-- All guidelines must comply with Landasan Hukum (legal framework)
+- All guidelines must comply with Landasan Hukum (Priority 0)
+- Legal conflicts must be flagged immediately in output
 - Cross-reference glossary terms consistently
 - Validate against user type tone meters
 - Test examples against real use cases
@@ -93,7 +116,8 @@ If two sources give different guidance:
 ## 📞 Support & Contributing
 
 For questions or updates to guidelines:
-1. Check existing files following the rule hierarchy
+1. Check existing files following the hierarchy (Priority 0-8)
 2. Reference conflict resolution matrix
 3. Maintain consistency with established patterns
 4. Follow Indonesian language standards (KBBI)
+5. Flag any legal compliance issues immediately
