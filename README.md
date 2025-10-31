@@ -1,5 +1,5 @@
 # ✍️ KETIK — Copy Guidelines for Ruang Murid
-last updated 28 Oct
+last updated 31 Oct
 
 This repository contains the **authoritative copy guidelines** for KETIK.
 All files here are treated as references for generating and validating content across Figma plugins and custom GPTs.
