@@ -80,6 +80,31 @@ When processing multiple nodes in batch:
 - **Respect visual hierarchy** (headings vs body text)
 - **Consider user flow** (sequence of text nodes)
 
+## MULTI-LINE TEXT HANDLING (CRITICAL)
+
+**IMPORTANT**: If the original text contains multiple lines or bullet points:
+
+- **PRESERVE ALL LINES**: Do NOT condense or summarize multi-line content into a single line
+- **Translate EACH LINE**: Improve each line individually while maintaining the overall structure
+- **KEEP LINE BREAKS**: Maintain the same number of lines as the original
+- **PRESERVE FORMATTING**: Keep bullet points (•, -, 📚, etc.), numbering, or other formatting markers
+
+**Example:**
+```
+Original:
+📚 Get 3 copy suggestions per UI element
+📚 Add specific context to make it sharper
+📚 Review and rephrase your placeholder texts
+
+Correct Output:
+1.A 📚 Dapatkan 3 saran salinan untuk setiap elemen antarmuka
+📚 Tambahkan konteks spesifik agar lebih tajam
+📚 Tinjau dan perbaiki teks placeholder Anda
+
+WRONG Output:
+1.A Dapatkan saran salinan untuk elemen antarmuka
+```
+
 ## SPECIAL CASES
 
 ### Very Short Text (< 5 words)
@@ -110,3 +135,4 @@ When processing multiple nodes in batch:
 - **Independence**: Each variant should stand alone
 - **Format precision**: Follow number.letter format exactly
 - **User first**: Every variant must serve user needs effectively
+- **Multi-line preservation**: NEVER condense multi-line text into single lines
