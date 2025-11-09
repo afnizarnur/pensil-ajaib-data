@@ -1,0 +1,125 @@
+{
+  "generated_at": "2025-11-09T15:50:54.856Z",
+  "version": "1.0.0",
+  "files": [
+    {
+      "path": "guru-base.toon",
+      "tribe": "ruang-murid",
+      "user": "guru",
+      "feature": null,
+      "uiElement": null,
+      "tokens": {
+        "json": 14624,
+        "toon": 14614,
+        "savings": "0.1%"
+      },
+      "size_bytes": 45734,
+      "checksum": "sha256:b1562aa12b839e397605988c6ea1d0d9dc2457e690e1f785b00f231579399a03"
+    },
+    {
+      "path": "mitra-base.toon",
+      "tribe": "ruang-murid",
+      "user": "mitra",
+      "feature": null,
+      "uiElement": null,
+      "tokens": {
+        "json": 14712,
+        "toon": 14702,
+        "savings": "0.1%"
+      },
+      "size_bytes": 45987,
+      "checksum": "sha256:a73988be159e024d0adf4ea12af1194d6e97393576306b32a6b3a0b1ff32c18b"
+    },
+    {
+      "path": "murid-base.toon",
+      "tribe": "ruang-murid",
+      "user": "murid",
+      "feature": null,
+      "uiElement": null,
+      "tokens": {
+        "json": 14582,
+        "toon": 14572,
+        "savings": "0.1%"
+      },
+      "size_bytes": 45288,
+      "checksum": "sha256:1b5cd385d979274569119031e5915e5716440c1a08ad824747fc80c3b6a3d5ff"
+    },
+    {
+      "path": "unit-kerja-base.toon",
+      "tribe": "ruang-murid",
+      "user": "unit-kerja",
+      "feature": null,
+      "uiElement": null,
+      "tokens": {
+        "json": 14783,
+        "toon": 14772,
+        "savings": "0.1%"
+      },
+      "size_bytes": 46183,
+      "checksum": "sha256:12e253c196312304b18e55eb0cb79af36294c747e1b00f5ef8dc720ac7ba6188"
+    },
+    {
+      "path": "guru-ai-powered-features.toon",
+      "tribe": "ruang-murid",
+      "user": "guru",
+      "feature": "ai-powered-features",
+      "uiElement": null,
+      "tokens": {
+        "json": 15168,
+        "toon": 15158,
+        "savings": "0.1%"
+      },
+      "size_bytes": 47509,
+      "checksum": "sha256:10aec3d58cd166af0acddc0b5edf1486a5efc9daa0cc8af86deef8dfb8e97387"
+    },
+    {
+      "path": "mitra-ai-powered-features.toon",
+      "tribe": "ruang-murid",
+      "user": "mitra",
+      "feature": "ai-powered-features",
+      "uiElement": null,
+      "tokens": {
+        "json": 15256,
+        "toon": 15246,
+        "savings": "0.1%"
+      },
+      "size_bytes": 47762,
+      "checksum": "sha256:ee3f92b6481f443b94c283e3cbc502420a2f003f82466a8a4fd6cd2c9423287c"
+    },
+    {
+      "path": "murid-ai-powered-features.toon",
+      "tribe": "ruang-murid",
+      "user": "murid",
+      "feature": "ai-powered-features",
+      "uiElement": null,
+      "tokens": {
+        "json": 15126,
+        "toon": 15116,
+        "savings": "0.1%"
+      },
+      "size_bytes": 47063,
+      "checksum": "sha256:978979f8142ffcf624c38dc28f31485a535f9e332d2c88c1be09d46d2e3b78cb"
+    },
+    {
+      "path": "unit-kerja-ai-powered-features.toon",
+      "tribe": "ruang-murid",
+      "user": "unit-kerja",
+      "feature": "ai-powered-features",
+      "uiElement": null,
+      "tokens": {
+        "json": 15327,
+        "toon": 15316,
+        "savings": "0.1%"
+      },
+      "size_bytes": 47958,
+      "checksum": "sha256:617609927f8cc5bfce6abed0cae8602605bc719e811a93b83b160910bb19ccff"
+    }
+  ],
+  "total_files": 8,
+  "average_savings": "0.1%",
+  "statistics": {
+    "total_json_tokens": 119578,
+    "total_toon_tokens": 119496,
+    "total_size_bytes": 373484
+  }
+}
