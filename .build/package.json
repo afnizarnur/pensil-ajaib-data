@@ -1,0 +1,19 @@
+{
+	"name": "pensil-ajaib-data-build",
+	"version": "1.0.0",
+	"description": "Build scripts for generating static JSON files from guideline markdown",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"generate": "node generate-json.js",
+		"validate": "node generate-json.js --validate-only"
+	},
+	"dependencies": {
+		"gray-matter": "^4.0.3",
+		"js-yaml": "^4.1.0"
+	},
+	"devDependencies": {},
+	"engines": {
+		"node": ">=18.0.0"
+	}
+}
