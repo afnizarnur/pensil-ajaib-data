@@ -1,0 +1,7 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Generated TOON files (commit these)
+# *.toon
+# index.json

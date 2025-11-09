@@ -1,0 +1,134 @@
+name: Generate TOON Files
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Core Guidelines/**/*.md'
+      - 'Reference/**/*.md'
+      - 'Feature Guidelines/**/*.md'
+      - 'Examples/**/*.md'
+      - 'Prompts/**/*.md'
+      - '.toon/generate.js'
+      - '.toon/package.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: '.toon/package-lock.json'
+      
+      - name: Install dependencies
+        working-directory: .toon
+        run: npm ci
+      
+      - name: Generate TOON files
+        id: generate
+        working-directory: .toon
+        run: |
+          echo "Starting TOON generation..."
+          node generate.js > generation.log 2>&1
+          
+          # Capture exit code
+          EXIT_CODE=$?
+          
+          # Display log
+          cat generation.log
+          
+          # Extract statistics from log
+          if [ $EXIT_CODE -eq 0 ]; then
+            TOTAL_FILES=$(grep "Total files generated:" generation.log | awk '{print $4}')
+            AVG_SAVINGS=$(grep "Average token savings:" generation.log | awk '{print $4}')
+            TOTAL_JSON=$(grep "Total JSON tokens:" generation.log | awk '{print $4}' | tr -d ',')
+            TOTAL_TOON=$(grep "Total TOON tokens:" generation.log | awk '{print $4}' | tr -d ',')
+            TOKENS_SAVED=$(grep "Total tokens saved:" generation.log | awk '{print $4}' | tr -d ',')
+            
+            echo "total_files=$TOTAL_FILES" >> $GITHUB_OUTPUT
+            echo "avg_savings=$AVG_SAVINGS" >> $GITHUB_OUTPUT
+            echo "total_json=$TOTAL_JSON" >> $GITHUB_OUTPUT
+            echo "total_toon=$TOTAL_TOON" >> $GITHUB_OUTPUT
+            echo "tokens_saved=$TOKENS_SAVED" >> $GITHUB_OUTPUT
+            echo "success=true" >> $GITHUB_OUTPUT
+          else
+            echo "success=false" >> $GITHUB_OUTPUT
+          fi
+          
+          exit $EXIT_CODE
+      
+      - name: Check for changes
+        id: check_changes
+        run: |
+          git add .toon/*.toon .toon/index.json
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes to commit"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected"
+          fi
+      
+      - name: Commit generated files
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: regenerate TOON files [skip ci]" \
+            -m "Generated ${{ steps.generate.outputs.total_files }} TOON files" \
+            -m "Average token savings: ${{ steps.generate.outputs.avg_savings }}" \
+            -m "Total tokens saved: ${{ steps.generate.outputs.tokens_saved }}"
+      
+      - name: Push changes
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git push
+      
+      - name: Generate workflow summary
+        if: always()
+        run: |
+          echo "# TOON Generation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ steps.generate.outputs.success }}" == "true" ]; then
+            echo "✅ **Status:** Success" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "## Statistics" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+            echo "| Total Files Generated | ${{ steps.generate.outputs.total_files }} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Average Token Savings | ${{ steps.generate.outputs.avg_savings }} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Total JSON Tokens | ${{ steps.generate.outputs.total_json }} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Total TOON Tokens | ${{ steps.generate.outputs.total_toon }} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Tokens Saved | ${{ steps.generate.outputs.tokens_saved }} |" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            if [ "${{ steps.check_changes.outputs.has_changes }}" == "true" ]; then
+              echo "📝 **Changes:** Committed and pushed to repository" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "📝 **Changes:** No changes detected (files up to date)" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "❌ **Status:** Failed" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "TOON generation failed. Check the logs above for details." >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Next Steps" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "The generated TOON files are now available in the \`.toon/\` directory and will be served by the backend API." >> $GITHUB_STEP_SUMMARY

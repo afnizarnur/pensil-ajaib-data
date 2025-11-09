@@ -1,0 +1,14 @@
+{
+  "name": "toon-generator",
+  "version": "1.0.0",
+  "description": "TOON format generator for Pensil Ajaib guidelines",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "generate": "node generate.js"
+  },
+  "dependencies": {
+    "@toon-format/toon": "^0.8.0",
+    "gpt-tokenizer": "^2.0.0"
+  }
+}
