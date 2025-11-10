@@ -142,6 +142,97 @@ function verboseLog(...args) {
 }
 
 /**
+ * Progress tracker for file processing
+ */
+class ProgressTracker {
+	constructor(total, label = 'Processing') {
+		this.total = total
+		this.current = 0
+		this.label = label
+		this.startTime = Date.now()
+		this.lastUpdate = 0
+	}
+	
+	increment(itemName = '') {
+		this.current++
+		
+		// Update progress every 100ms or on last item
+		const now = Date.now()
+		if (now - this.lastUpdate > 100 || this.current === this.total) {
+			this.display(itemName)
+			this.lastUpdate = now
+		}
+	}
+	
+	display(itemName = '') {
+		const percentage = Math.floor((this.current / this.total) * 100)
+		const bar = this.createProgressBar(percentage)
+		const elapsed = ((Date.now() - this.startTime) / 1000).toFixed(1)
+		
+		// Clear line and write progress
+		process.stdout.write('\r\x1b[K')
+		process.stdout.write(`  ${bar} ${percentage}% (${this.current}/${this.total}) - ${elapsed}s`)
+		
+		if (itemName && CLI_OPTIONS.verbose) {
+			process.stdout.write(` - ${itemName}`)
+		}
+		
+		// New line on completion
+		if (this.current === this.total) {
+			process.stdout.write('\n')
+		}
+	}
+	
+	createProgressBar(percentage) {
+		const width = 20
+		const filled = Math.floor((percentage / 100) * width)
+		const empty = width - filled
+		return '[' + '█'.repeat(filled) + '░'.repeat(empty) + ']'
+	}
+	
+	complete() {
+		if (this.current < this.total) {
+			this.current = this.total
+			this.display()
+		}
+	}
+}
+
+/**
+ * Statistics tracker for token optimization
+ */
+class TokenStats {
+	constructor() {
+		this.totalOriginal = 0
+		this.totalOptimized = 0
+		this.fileCount = 0
+	}
+	
+	add(originalTokens, optimizedTokens) {
+		this.totalOriginal += originalTokens
+		this.totalOptimized += optimizedTokens
+		this.fileCount++
+	}
+	
+	getSavings() {
+		if (this.totalOriginal === 0) return 0
+		return ((this.totalOriginal - this.totalOptimized) / this.totalOriginal) * 100
+	}
+	
+	report() {
+		console.log('\n📊 Token Optimization Statistics:')
+		console.log(`  - Files processed: ${this.fileCount}`)
+		console.log(`  - Original tokens: ${this.totalOriginal.toLocaleString()}`)
+		console.log(`  - Optimized tokens: ${this.totalOptimized.toLocaleString()}`)
+		console.log(`  - Tokens saved: ${(this.totalOriginal - this.totalOptimized).toLocaleString()}`)
+		console.log(`  - Savings: ${this.getSavings().toFixed(2)}%`)
+	}
+}
+
+// Global token stats tracker
+const TOKEN_STATS = new TokenStats()
+
+/**
  * Recursively read all markdown files from a directory
  * @param {string} dirPath - Directory path to scan
  * @returns {Promise<string[]>} Array of absolute file paths
@@ -408,7 +499,7 @@ async function validateGeneratedFiles(composedFiles, featureFiles, individualFil
 	
 	// Validate individual files
 	for (const fileInfo of individualFiles) {
-		const filePath = path.join(BUILD_DIR, fileInfo.path)
+		const filePath = path.join(CLI_OPTIONS.outputDir, fileInfo.path)
 		const validation = await validateJSONFile(filePath)
 		
 		if (!validation.valid) {
@@ -556,6 +647,8 @@ async function generateManifest(composedFiles, featureFiles, individualFiles) {
  * Main entry point
  */
 async function main() {
+	const startTime = Date.now()
+	
 	// Parse command-line arguments
 	CLI_OPTIONS = parseArgs(process.argv.slice(2))
 	
@@ -630,6 +723,9 @@ async function main() {
 			// Generate individual guideline files
 			individualFiles = await generateAllIndividualGuidelines()
 			
+			// Display token optimization statistics
+			TOKEN_STATS.report()
+			
 			// Generate manifest
 			const manifest = await generateManifest(composedFiles, featureFiles, individualFiles)
 			
@@ -645,9 +741,12 @@ async function main() {
 			process.exit(1)
 		}
 		
+		// Calculate generation time
+		const elapsedTime = ((Date.now() - startTime) / 1000).toFixed(2)
+		
 		// Summary
 		if (!CLI_OPTIONS.validateOnly) {
-			console.log('📊 Generation Summary:')
+			console.log('\n📊 Generation Summary:')
 			console.log(`  - Total source files: ${totalFiles}`)
 			console.log(`  - Base composed guidelines: ${composedFiles.length}`)
 			console.log(`  - Feature-specific guidelines: ${featureFiles.length}`)
@@ -658,10 +757,11 @@ async function main() {
 			const totalTokens = [...composedFiles, ...featureFiles, ...individualFiles]
 				.reduce((sum, f) => sum + (f.tokenCount || 0), 0)
 			console.log(`  - Total tokens: ${totalTokens.toLocaleString()}`)
+			console.log(`  - Generation time: ${elapsedTime}s`)
 			
 			console.log('\n✅ Static JSON generation complete!\n')
 		} else {
-			console.log('\n✅ Validation complete!\n')
+			console.log(`\n✅ Validation complete in ${elapsedTime}s!\n`)
 		}
 		
 		process.exit(0)
@@ -691,6 +791,8 @@ export {
 	displayHelp,
 	updateDirectoryPaths,
 	verboseLog,
+	ProgressTracker,
+	TokenStats,
 	REPO_ROOT,
 	BUILD_DIR,
 	COMPOSED_DIR,
@@ -1039,7 +1141,7 @@ async function readAndCombineFiles(filePaths) {
  * @returns {Promise<Object>} Composed guideline data
  */
 async function composeGuidelines(tribe, user, feature = null) {
-	console.log(`📝 Composing guidelines for ${tribe}/${user}${feature ? `/${feature}` : ''}...`)
+	verboseLog(`Composing guidelines for ${tribe}/${user}${feature ? `/${feature}` : ''}`)
 	
 	// Get file mappings
 	const fileMap = mapGuidelineFiles(tribe, user, feature)
@@ -1104,8 +1206,7 @@ async function composeGuidelines(tribe, user, feature = null) {
 		}
 	}
 	
-	console.log(`  ✓ Processed ${composed.metadata.files.length} files`)
-	console.log(`  ✓ Token savings: ${tokenSavings.toFixed(2)}%`)
+	verboseLog(`Processed ${composed.metadata.files.length} files, token savings: ${tokenSavings.toFixed(2)}%`)
 	
 	return composed
 }
@@ -1122,14 +1223,18 @@ export {
  * @returns {Promise<Array>} Array of generated file metadata
  */
 async function generateAllComposedGuidelines() {
-	console.log('📝 Generating composed guidelines for all combinations...\n')
+	console.log('📝 Generating composed guidelines for all combinations...')
 	
 	const generatedFiles = []
+	const progress = new ProgressTracker(TRIBE_USER_COMBINATIONS.length, 'Composed guidelines')
 	
 	for (const { tribe, user } of TRIBE_USER_COMBINATIONS) {
 		try {
 			// Compose guidelines
 			const composed = await composeGuidelines(tribe, user)
+			
+			// Track token stats
+			TOKEN_STATS.add(composed.metadata.originalTokenCount, composed.metadata.tokenCount)
 			
 			// Generate filename
 			const fileName = `${tribe}-${user}.json`
@@ -1147,15 +1252,17 @@ async function generateAllComposedGuidelines() {
 				files: composed.metadata.files.length
 			})
 			
-			console.log(`  ✓ Generated ${fileName}`)
+			progress.increment(fileName)
 			
 		} catch (error) {
-			console.error(`  ❌ Failed to generate ${tribe}/${user}:`, error.message)
+			console.error(`\n  ❌ Failed to generate ${tribe}/${user}:`, error.message)
+			progress.increment()
 			// Continue with other combinations
 		}
 	}
 	
-	console.log(`\n✓ Generated ${generatedFiles.length} composed guideline files\n`)
+	progress.complete()
+	console.log(`✓ Generated ${generatedFiles.length} composed guideline files\n`)
 	
 	return generatedFiles
 }
@@ -1191,7 +1298,7 @@ async function getFeatureGuidelines() {
  * @returns {Promise<Array>} Array of generated file metadata
  */
 async function generateFeatureComposedGuidelines() {
-	console.log('📝 Generating feature-specific composed guidelines...\n')
+	console.log('📝 Generating feature-specific composed guidelines...')
 	
 	const features = await getFeatureGuidelines()
 	
@@ -1200,15 +1307,20 @@ async function generateFeatureComposedGuidelines() {
 		return []
 	}
 	
-	console.log(`  Found ${features.length} feature(s): ${features.join(', ')}\n`)
+	verboseLog(`Found ${features.length} feature(s): ${features.join(', ')}`)
 	
 	const generatedFiles = []
+	const totalCombinations = features.length * TRIBE_USER_COMBINATIONS.length
+	const progress = new ProgressTracker(totalCombinations, 'Feature guidelines')
 	
 	for (const feature of features) {
 		for (const { tribe, user } of TRIBE_USER_COMBINATIONS) {
 			try {
 				// Compose guidelines with feature
 				const composed = await composeGuidelines(tribe, user, feature)
+				
+				// Track token stats
+				TOKEN_STATS.add(composed.metadata.originalTokenCount, composed.metadata.tokenCount)
 				
 				// Generate filename
 				const fileName = `${tribe}-${user}-${feature}.json`
@@ -1227,16 +1339,18 @@ async function generateFeatureComposedGuidelines() {
 					files: composed.metadata.files.length
 				})
 				
-				console.log(`  ✓ Generated ${fileName}`)
+				progress.increment(fileName)
 				
 			} catch (error) {
-				console.error(`  ❌ Failed to generate ${tribe}/${user}/${feature}:`, error.message)
+				console.error(`\n  ❌ Failed to generate ${tribe}/${user}/${feature}:`, error.message)
+				progress.increment()
 				// Continue with other combinations
 			}
 		}
 	}
 	
-	console.log(`\n✓ Generated ${generatedFiles.length} feature-specific guideline files\n`)
+	progress.complete()
+	console.log(`✓ Generated ${generatedFiles.length} feature-specific guideline files\n`)
 	
 	return generatedFiles
 }
@@ -1309,23 +1423,32 @@ async function processIndividualGuideline(filePath) {
  * @returns {Promise<Array>} Array of generated file metadata
  */
 async function generateAllIndividualGuidelines() {
-	console.log('📝 Generating individual guideline files...\n')
+	console.log('📝 Generating individual guideline files...')
 	
 	// Get all guideline files
 	const filesByDir = await getAllGuidelineFiles()
 	
+	// Count total files
+	let totalFiles = 0
+	for (const files of filesByDir.values()) {
+		totalFiles += files.length
+	}
+	
 	const generatedFiles = []
-	let processedCount = 0
 	let errorCount = 0
+	const progress = new ProgressTracker(totalFiles, 'Individual guidelines')
 	
 	// Process each directory
 	for (const [dirName, files] of filesByDir) {
-		console.log(`  Processing ${dirName}...`)
+		verboseLog(`Processing ${dirName} (${files.length} files)`)
 		
 		for (const filePath of files) {
 			try {
 				// Process individual guideline
 				const individual = await processIndividualGuideline(filePath)
+				
+				// Track token stats
+				TOKEN_STATS.add(individual.metadata.originalTokenCount, individual.metadata.tokenCount)
 				
 				// Generate filename from ID
 				const fileName = `${individual.id}.json`
@@ -1343,19 +1466,19 @@ async function generateAllIndividualGuidelines() {
 					tokenCount: individual.metadata.tokenCount
 				})
 				
-				processedCount++
+				progress.increment(path.basename(filePath))
 				
 			} catch (error) {
-				console.error(`    ❌ Failed to process ${getRelativePath(filePath)}:`, error.message)
+				console.error(`\n  ❌ Failed to process ${getRelativePath(filePath)}:`, error.message)
 				errorCount++
+				progress.increment()
 				// Continue with other files
 			}
 		}
-		
-		console.log(`    ✓ Processed ${files.length} files from ${dirName}`)
 	}
 	
-	console.log(`\n✓ Generated ${generatedFiles.length} individual guideline files`)
+	progress.complete()
+	console.log(`✓ Generated ${generatedFiles.length} individual guideline files`)
 	if (errorCount > 0) {
 		console.log(`  ⚠️  ${errorCount} files failed to process`)
 	}
