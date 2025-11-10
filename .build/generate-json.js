@@ -375,7 +375,7 @@ async function validateGeneratedFiles(composedFiles, featureFiles, individualFil
 	// Validate composed files
 	const allComposedFiles = [...composedFiles, ...featureFiles]
 	for (const fileInfo of allComposedFiles) {
-		const filePath = path.join(BUILD_DIR, fileInfo.path)
+		const filePath = path.join(CLI_OPTIONS.outputDir, fileInfo.path)
 		const validation = await validateJSONFile(filePath)
 		
 		if (!validation.valid) {

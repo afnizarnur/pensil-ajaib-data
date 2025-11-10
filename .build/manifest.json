@@ -1,0 +1,198 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2025-11-09T23:42:47+07:00",
+  "commitHash": "18dd581c88713bcb5f65f49b5ca81797baed23ae",
+  "repository": "afnizarnur/pensil-ajaib-data",
+  "files": {
+    "composed": [
+      {
+        "path": "composed/ruang-murid-murid.json",
+        "tribe": "ruang-murid",
+        "user": "murid",
+        "tokenCount": 10123
+      },
+      {
+        "path": "composed/ruang-murid-guru.json",
+        "tribe": "ruang-murid",
+        "user": "guru",
+        "tokenCount": 10232
+      },
+      {
+        "path": "composed/ruang-murid-mitra.json",
+        "tribe": "ruang-murid",
+        "user": "mitra",
+        "tokenCount": 10288
+      },
+      {
+        "path": "composed/ruang-murid-unit-kerja.json",
+        "tribe": "ruang-murid",
+        "user": "unit-kerja",
+        "tokenCount": 10333
+      },
+      {
+        "path": "composed/ruang-murid-murid-ai-powered-features.json",
+        "tribe": "ruang-murid",
+        "user": "murid",
+        "feature": "ai-powered-features",
+        "tokenCount": 10506
+      },
+      {
+        "path": "composed/ruang-murid-guru-ai-powered-features.json",
+        "tribe": "ruang-murid",
+        "user": "guru",
+        "feature": "ai-powered-features",
+        "tokenCount": 10615
+      },
+      {
+        "path": "composed/ruang-murid-mitra-ai-powered-features.json",
+        "tribe": "ruang-murid",
+        "user": "mitra",
+        "feature": "ai-powered-features",
+        "tokenCount": 10671
+      },
+      {
+        "path": "composed/ruang-murid-unit-kerja-ai-powered-features.json",
+        "tribe": "ruang-murid",
+        "user": "unit-kerja",
+        "feature": "ai-powered-features",
+        "tokenCount": 10716
+      }
+    ],
+    "individual": [
+      {
+        "path": "individual/core-guidelines-general-foundation.json",
+        "id": "core-guidelines-general-foundation",
+        "name": "general-foundation",
+        "sourceFile": "Core Guidelines/general-foundation.md",
+        "tokenCount": 642
+      },
+      {
+        "path": "individual/core-guidelines-ruang-murid-tribe-glossary.json",
+        "id": "core-guidelines-ruang-murid-tribe-glossary",
+        "name": "glossary",
+        "sourceFile": "Core Guidelines/ruang-murid-tribe/glossary.md",
+        "tokenCount": 2154
+      },
+      {
+        "path": "individual/core-guidelines-ruang-murid-tribe-tribe.json",
+        "id": "core-guidelines-ruang-murid-tribe-tribe",
+        "name": "tribe",
+        "sourceFile": "Core Guidelines/ruang-murid-tribe/tribe.md",
+        "tokenCount": 752
+      },
+      {
+        "path": "individual/core-guidelines-ruang-murid-tribe-user-guru.json",
+        "id": "core-guidelines-ruang-murid-tribe-user-guru",
+        "name": "guru",
+        "sourceFile": "Core Guidelines/ruang-murid-tribe/user/guru.md",
+        "tokenCount": 773
+      },
+      {
+        "path": "individual/core-guidelines-ruang-murid-tribe-user-mitra.json",
+        "id": "core-guidelines-ruang-murid-tribe-user-mitra",
+        "name": "mitra",
+        "sourceFile": "Core Guidelines/ruang-murid-tribe/user/mitra.md",
+        "tokenCount": 829
+      },
+      {
+        "path": "individual/core-guidelines-ruang-murid-tribe-user-murid.json",
+        "id": "core-guidelines-ruang-murid-tribe-user-murid",
+        "name": "murid",
+        "sourceFile": "Core Guidelines/ruang-murid-tribe/user/murid.md",
+        "tokenCount": 664
+      },
+      {
+        "path": "individual/core-guidelines-ruang-murid-tribe-user-unit-kerja.json",
+        "id": "core-guidelines-ruang-murid-tribe-user-unit-kerja",
+        "name": "unit-kerja",
+        "sourceFile": "Core Guidelines/ruang-murid-tribe/user/unit-kerja.md",
+        "tokenCount": 874
+      },
+      {
+        "path": "individual/reference-error-templates.json",
+        "id": "reference-error-templates",
+        "name": "error-templates",
+        "sourceFile": "Reference/error-templates.md",
+        "tokenCount": 675
+      },
+      {
+        "path": "individual/reference-style-standards.json",
+        "id": "reference-style-standards",
+        "name": "style-standards",
+        "sourceFile": "Reference/style-standards.md",
+        "tokenCount": 460
+      },
+      {
+        "path": "individual/reference-ui-component-specs.json",
+        "id": "reference-ui-component-specs",
+        "name": "ui-component-specs",
+        "sourceFile": "Reference/ui-component-specs.md",
+        "tokenCount": 701
+      },
+      {
+        "path": "individual/examples-component-copy-samples.json",
+        "id": "examples-component-copy-samples",
+        "name": "component-copy-samples",
+        "sourceFile": "Examples/component-copy-samples.md",
+        "tokenCount": 1194
+      },
+      {
+        "path": "individual/examples-dialog-examples.json",
+        "id": "examples-dialog-examples",
+        "name": "dialog-examples",
+        "sourceFile": "Examples/dialog-examples.md",
+        "tokenCount": 848
+      },
+      {
+        "path": "individual/examples-onboarding-samples.json",
+        "id": "examples-onboarding-samples",
+        "name": "onboarding-samples",
+        "sourceFile": "Examples/onboarding-samples.md",
+        "tokenCount": 1250
+      },
+      {
+        "path": "individual/examples-toast-message-library.json",
+        "id": "examples-toast-message-library",
+        "name": "toast-message-library",
+        "sourceFile": "Examples/toast-message-library.md",
+        "tokenCount": 783
+      },
+      {
+        "path": "individual/feature-guidelines-ai-powered-features.json",
+        "id": "feature-guidelines-ai-powered-features",
+        "name": "ai-powered-features",
+        "sourceFile": "Feature Guidelines/ai-powered-features.md",
+        "tokenCount": 383
+      },
+      {
+        "path": "individual/prompts-batch-instructions.json",
+        "id": "prompts-batch-instructions",
+        "name": "Batch Instructions",
+        "sourceFile": "Prompts/batch-instructions.md",
+        "tokenCount": 1010
+      },
+      {
+        "path": "individual/prompts-system-prompt.json",
+        "id": "prompts-system-prompt",
+        "name": "System Prompt",
+        "sourceFile": "Prompts/system-prompt.md",
+        "tokenCount": 770
+      },
+      {
+        "path": "individual/prompts-variant-explanation.json",
+        "id": "prompts-variant-explanation",
+        "name": "Variant Explanation",
+        "sourceFile": "Prompts/variant-explanation.md",
+        "tokenCount": 1229
+      }
+    ]
+  },
+  "statistics": {
+    "totalFiles": 26,
+    "totalComposedFiles": 8,
+    "totalIndividualFiles": 18,
+    "totalTokens": 99475,
+    "totalTokenSavings": 17555,
+    "averageSavingsPercent": 15
+  }
+}
