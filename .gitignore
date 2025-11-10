@@ -1,3 +1,9 @@
 # Build directory - exclude node_modules but keep generated files
 .build/node_modules/
 .build/*.log
+
+
+# AI Assistants
+.claude/
+.kiro/
+.cursor/
