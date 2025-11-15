@@ -5,134 +5,256 @@ description: Instructions for processing multiple text nodes in batch
 
 # Batch Processing Instructions
 
-You will receive multiple text nodes to improve in a single request. Process them efficiently and consistently.
+Process all provided text nodes and generate exactly **{{VARIANTS_COUNT}} variants** per text, following the guidelines and context provided above.
 
-## INPUT FORMAT
+## OUTPUT FORMAT (STRICT)
 
-Each text node will include:
-- **Original text**: The current copy
-- **Context information**:
-  - Hierarchy (parent containers)
-  - Hierarchy depth (UI nesting level)
-  - Position (x, y, width, height)
-  - Parent names (breadcrumb path)
+Use this exact format:
 
-## OUTPUT FORMAT (CRITICAL)
-
-Generate **exactly {{VARIANTS_COUNT}} variants** for EACH text node.
-
-**Required format:**
 ```
-1.A [First variant for text #1]
-1.B [Second variant for text #1]
-1.C [Third variant for text #1]
+1.A <variant 1 for first text>
+1.B <variant 2 for first text>
+1.C <variant 3 for first text>
+[... up to {{VARIANTS_COUNT}} variants]
 
-2.A [First variant for text #2]
-2.B [Second variant for text #2]
-2.C [Third variant for text #2]
+2.A <variant 1 for second text>
+2.B <variant 2 for second text>
+2.C <variant 3 for second text>
+[... up to {{VARIANTS_COUNT}} variants]
 
-3.A [First variant for text #3]
-3.B [Second variant for text #3]
-3.C [Third variant for text #3]
+...and so on for all texts
 ```
 
-**Format rules:**
-- Number = text node index (1-based)
-- Letter = variant (A, B, C, ...)
-- Space after the letter prefix
-- Each variant on its own line
-- Blank line between text nodes for readability
+**Formatting Rules:**
+- Start each line: `[NUMBER].[LETTER] [content]`
+- ONE space after the letter-dot
+- Output ONLY the improved text (no labels, IDs, colons, quotes, or layer names)
+- Blank line between text groups for readability
+- Process ALL texts in order listed
 
-## PROCESSING STRATEGY
+## CRITICAL: Multi-Line Preservation ⚠️
 
-### For Each Text Node:
+**DO NOT condense multi-line content into a single line.**
 
-1. **Understand Context**
-   - Note hierarchy depth (0-1 = prominent, 4+ = nested detail)
-   - Consider parent container type (button, form, card, etc.)
-   - Review any design context provided
+This is a common error - avoid it:
 
-2. **Apply All Guidelines**
-   - Reference standards (terminology, glossary)
-   - Foundation (brand voice, core principles)
-   - Tribe execution (audience-specific tone)
-   - Feature guidelines (if AI product, etc.)
+❌ **WRONG** (condensed):
+```
+Original (3 lines):
+"Simpan perubahan?
+Perubahan belum tersimpan akan hilang.
+Lanjutkan?"
 
-3. **Generate Diverse Variants**
-   - Variant A: More formal/conservative approach
-   - Variant B: Balanced/standard approach
-   - Variant C: More casual/friendly approach
-   - **All must comply with ALL guidelines**
+Bad output:
+1.A Simpan perubahan? Perubahan belum tersimpan akan hilang. Lanjutkan?
+```
 
-4. **Quality Check Each Variant**
-   - Proper Bahasa Indonesia (KBBI)
-   - No forbidden terms
-   - Within character limits (if specified)
-   - Appropriate tone for audience
-   - Grammatically correct (PUEBI)
+✅ **CORRECT** (preserved):
+```
+1.A Simpan perubahan?
+Perubahan belum tersimpan akan hilang.
+Lanjutkan?
+```
 
-## CONSISTENCY RULES
+**Always preserve:**
+- Line breaks (`\n`)
+- Bullet points (•, -, *, 📚, etc.) and numbered lists
+- Paragraph separation
+- Dialog/modal structures
+- Multi-step instructions
+- Empty lines for spacing
 
-When processing multiple nodes in batch:
-
-- **Maintain consistent tone** across related UI elements
-- **Use glossary terms uniformly** throughout
-- **Respect visual hierarchy** (headings vs body text)
-- **Consider user flow** (sequence of text nodes)
-
-## MULTI-LINE TEXT HANDLING (CRITICAL)
-
-**IMPORTANT**: If the original text contains multiple lines or bullet points:
-
-- **PRESERVE ALL LINES**: Do NOT condense or summarize multi-line content into a single line
-- **Translate EACH LINE**: Improve each line individually while maintaining the overall structure
-- **KEEP LINE BREAKS**: Maintain the same number of lines as the original
-- **PRESERVE FORMATTING**: Keep bullet points (•, -, 📚, etc.), numbering, or other formatting markers
-
-**Example:**
+**Example with bullets:**
 ```
 Original:
 📚 Get 3 copy suggestions per UI element
 📚 Add specific context to make it sharper
 📚 Review and rephrase your placeholder texts
 
-Correct Output:
+Correct:
 1.A 📚 Dapatkan 3 saran salinan untuk setiap elemen antarmuka
 📚 Tambahkan konteks spesifik agar lebih tajam
 📚 Tinjau dan perbaiki teks placeholder Anda
-
-WRONG Output:
-1.A Dapatkan saran salinan untuk elemen antarmuka
 ```
 
-## SPECIAL CASES
+## CONTEXT-AWARE PROCESSING
+
+Use the context information provided for each text:
+
+### Hierarchy Depth (indicates importance level)
+
+- **depth: 0-1** → Headlines, primary CTAs
+  - Use strong, attention-grabbing language
+  - Direct and impactful
+  - Clear call to action
+
+- **depth: 2-3** → Section headers, secondary actions
+  - Use clear, organizing language
+  - Balanced and structured
+  - Guide user through interface
+
+- **depth: 4+** → Helper text, tertiary content
+  - Use supportive, detailed language
+  - Explanatory and informative
+  - Provide context and assistance
+
+### Parent Container (indicates UI element type)
+
+- **Button, Link** → Action-oriented, concise, concrete verbs
+- **Dialog, Modal** → Clear decision context, explain consequences
+- **Toast, Snackbar** → Brief, informative, status updates
+- **Empty State** → Encouraging, actionable, opportunity framing
+- **Error Message** → Specific problem, actionable solution, empathetic tone
+- **Form Field** → Clear expectation, helpful placeholder/label
+
+## VARIANT GENERATION STRATEGY
+
+Generate {{VARIANTS_COUNT}} distinct variants offering different approaches:
+
+### Vary by Tone (as allowed by Tribe Execution rules)
+
+- **Formal/Professional**: Precise, respectful, authoritative
+- **Balanced/Standard**: Clear, friendly, approachable
+- **Accessible/Casual**: Conversational, empathetic, warm (if tribe allows)
+
+### Vary by Focus
+
+- **Action-Oriented**: Emphasizes what user should do
+- **Benefit-Focused**: Highlights value and outcomes
+- **Empathetic**: Acknowledges user feelings and context
+
+### Vary by Structure
+
+- **Direct**: Straightforward statement or command
+- **Explanatory**: Provides context and reasoning
+- **Question-Based**: Engages user with questions (when appropriate)
+
+**All variants must:**
+- Follow the same guidelines (Reference, Foundation, Tribe Execution, Features)
+- Preserve the same meaning and facts
+- Be production-ready and complete
+- Pass all compliance checks
+
+## MANDATORY PRE-OUTPUT VALIDATION
+
+For EACH variant, verify before outputting:
+
+### Language & Grammar Compliance
+- [ ] 100% Bahasa Indonesia (KBBI/PUEBI compliant)
+- [ ] No English words (unless glossary-approved)
+- [ ] Grammatically correct and natural sounding
+
+### Guideline Compliance
+- [ ] **Terminology**: All terms match glossary
+  - Required terms used correctly
+  - Forbidden terms completely eliminated
+- [ ] **Formats**: Follow Reference/style-standards.md exactly
+  - Dates: per specified format
+  - Times: per specified format (include timezone if required, e.g., "14.30 WIB")
+  - Numbers: per specified format (thousands separator, decimals)
+  - Currency: per specified format (e.g., "Rp" with proper spacing)
+- [ ] **Tone**: Matches Tribe Execution user profile
+  - Formal vs balanced vs casual (as specified)
+- [ ] **Addressing**: Correct per Tribe rules
+  - Kamu vs Anda vs other forms
+  - Consistent throughout related elements
+
+### Structure Preservation
+- [ ] Multi-line structure NOT condensed
+- [ ] Placeholders intact: `{var}`, `{{var}}`, `%s`, `$variable`, etc.
+- [ ] Markup preserved: `<b>`, `<i>`, `*`, `**`, etc.
+- [ ] Code/keys/IDs unchanged: `error_code_404`, `api_key`, etc.
+- [ ] Bullet points and list formatting maintained
+
+### Quality Standards
+- [ ] Meaning preserved (no invented features or data)
+- [ ] Facts accurate (no altered numbers, dates, or promises)
+- [ ] Clarity appropriate for target audience
+- [ ] Actionable (especially for errors and CTAs - provide clear next steps)
+- [ ] Character limits respected (if specified in context)
+
+## SPECIAL HANDLING BY TEXT TYPE
+
+### Error Messages
+- Explain what happened clearly (avoid technical jargon)
+- Provide specific, actionable next steps
+- Use empathetic tone (as allowed by Tribe rules)
+- Include helpful details (what to check, who to contact)
+
+**Example variants:**
+- Variant A: Technical/precise → "Koneksi ke server gagal. Periksa jaringan Anda."
+- Variant B: Balanced clarity → "Tidak dapat terhubung. Periksa koneksi internet Anda dan coba lagi."
+- Variant C: Empathetic → "Sepertinya ada masalah dengan koneksi. Periksa jaringan Anda dan kami akan coba lagi."
+
+### Call-to-Action (CTA) Buttons
+- Use concrete action verbs
+- Keep concise (2-4 words typically)
+- Make outcome clear
+- Create urgency when appropriate
+
+**Example variants:**
+- Variant A: Action-focused → "Simpan Perubahan"
+- Variant B: Benefit-focused → "Simpan Progres Saya"
+- Variant C: Encouraging → "Ya, Simpan"
+
+### Empty States
+- Acknowledge the empty state
+- Explain why it's empty (if not obvious)
+- Provide clear action to resolve or begin
+
+**Example variants:**
+- Variant A: Informative → "Belum ada tugas. Guru akan menambahkan tugas di sini."
+- Variant B: Action-oriented → "Tidak ada tugas saat ini. Periksa lagi nanti atau hubungi guru."
+- Variant C: Opportunity → "Belum ada tugas! Gunakan waktu ini untuk mengulas materi."
+
+### Multi-Step Instructions
+- Maintain numbered or bulleted structure
+- Keep steps in logical order
+- Preserve step granularity (don't combine or split steps)
+- Ensure each step is actionable
 
 ### Very Short Text (< 5 words)
 - Variants may be similar but with subtle differences
 - Focus on word choice and tone nuance
-- Ensure each variant is still distinct
+- Ensure each variant is still distinct and valid
 
-### Error Messages
-- Variant A: Technical/precise
-- Variant B: Balanced clarity
-- Variant C: Empathetic/supportive
-- All must help user understand and resolve issue
+## CONSISTENCY RULES FOR BATCH PROCESSING
 
-### Call-to-Action (CTA) Buttons
-- Variant A: Action-focused (verb-led)
-- Variant B: Benefit-focused
-- Variant C: Friendly/encouraging
-- All must clearly indicate action
+When processing multiple text nodes in a single batch:
 
-### Empty States
-- Variant A: Informative (what/why)
-- Variant B: Action-oriented (what to do)
-- Variant C: Encouraging (opportunity framing)
+- **Maintain consistent tone** across related UI elements in the same flow
+- **Use glossary terms uniformly** throughout (don't vary terminology)
+- **Respect visual hierarchy** (headlines should feel more prominent than body text)
+- **Consider user flow sequence** (text should make sense in the order presented)
+
+## FINAL COMPLIANCE SWEEP
+
+Before submitting your output, perform one final check across ALL variants:
+
+1. **Language scan**: Any English words? → Replace with Bahasa Indonesia
+2. **Format verification**: Dates/times/numbers/currency correct? → Standardize per guidelines
+3. **Addressing consistency**: Kamu/Anda usage consistent? → Unify per Tribe rules
+4. **Multi-line check**: Line breaks preserved? → Restore if condensed
+5. **Placeholder verification**: All `{variables}` and markup intact? → Fix if broken
+6. **Forbidden terms scan**: Any forbidden terms? → Replace with required alternatives
+
+## OUTPUT DISCIPLINE
+
+**Output ONLY the formatted variants:**
+- No preamble or introduction
+- No explanations or reasoning
+- No commentary or notes
+- No quotes around the text
+- No labels like "Text:", "Content:", "Improved:"
+- No layer names, element IDs, or technical metadata
+
+Process ALL texts in order before outputting. Your output should be pure, formatted variants ready for direct use in the UI.
 
 ## REMEMBER
 
-- **Speed AND quality**: Process efficiently but maintain standards
-- **Independence**: Each variant should stand alone
-- **Format precision**: Follow number.letter format exactly
+- **Speed AND quality**: Process efficiently but maintain all standards
+- **Independence**: Each variant should stand alone as a complete option
+- **Format precision**: Follow `number.letter` format exactly
 - **User first**: Every variant must serve user needs effectively
 - **Multi-line preservation**: NEVER condense multi-line text into single lines
+- **Guideline hierarchy**: Reference > Foundation > Tribe Execution > Features
