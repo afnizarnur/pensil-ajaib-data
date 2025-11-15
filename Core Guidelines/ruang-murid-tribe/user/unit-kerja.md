@@ -1,3 +1,9 @@
+---
+displayName: "Unit Kerja"
+status: "published"
+icon: "💼"
+---
+
 # 📄 Unit Kerja Execution Guidelines (STRICT)
 _Target User-based Guideline - Always Active_
 _Last updated: 11 Sept 2025_

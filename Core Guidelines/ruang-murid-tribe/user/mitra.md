@@ -1,3 +1,9 @@
+---
+displayName: "Mitra"
+status: "published"
+icon: "🤝"
+---
+
 # 📄 Ruang Murid Copy Guideline — MITRA (STRICT)
 _Target User-based Guideline - Always Active_
 _Last updated: 11 Sept 2025_

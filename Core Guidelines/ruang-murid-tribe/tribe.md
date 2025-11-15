@@ -1,3 +1,9 @@
+---
+displayName: "Ruang Murid"
+status: "published"
+icon: "https://raw.githubusercontent.com/afnizarnur/pensil-ajaib-data/main/Core%20Guidelines/ruang-murid-tribe/icon.svg"
+---
+
 # 📄 Ruang Murid Copy Guideline — MURID (STRICT)
 _Product Context - Always Active_
 _Last updated: 11 Sept 2025_
