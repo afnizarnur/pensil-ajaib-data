@@ -145,6 +145,15 @@ Correct JSON:
 }
 ```
 
+## CRITICAL: VARIANT UNIQUENESS ⚠️
+
+**Every variant MUST be different from the original input text.**
+
+- Never return the original text as one of the variants
+- Each variant should offer meaningful improvement or alternative phrasing
+- Even if the original text is already good, provide improved alternatives
+- Apply guidelines to transform the text, not just copy it
+
 ## CONTEXT-AWARE PROCESSING
 
 Consider the hierarchy and context of each text:
@@ -228,4 +237,5 @@ Before responding, verify:
 - [ ] Letters are sequential (A, B, C, ...)
 - [ ] All guidelines followed (Reference > Foundation > Tribe > Feature)
 - [ ] Each variant offers different approach
+- [ ] **CRITICAL: No variant is identical to the original input text**
 - [ ] All text is proper Bahasa Indonesia (KBBI/PUEBI)
