@@ -1,6 +1,6 @@
 ---
 name: Batch Instructions
-description: Instructions for processing multiple text nodes in batch
+description: Instructions for processing multiple text nodes
 ---
 
 # Batch Processing Instructions
@@ -9,28 +9,76 @@ Process all provided text nodes and generate exactly **{{VARIANTS_COUNT}} varian
 
 ## OUTPUT FORMAT (STRICT)
 
-Use this exact format:
+**IMPORTANT**: Your response must be ONLY valid JSON. Do not include any text, explanation, or markdown before or after the JSON object.
 
+Return a JSON object with this exact structure:
+
+```json
+{
+  "variants": [
+    {
+      "nodeIndex": 1,
+      "letter": "A",
+      "text": "improved text variant A for first node"
+    },
+    {
+      "nodeIndex": 1,
+      "letter": "B",
+      "text": "improved text variant B for first node"
+    },
+    {
+      "nodeIndex": 1,
+      "letter": "C",
+      "text": "improved text variant C for first node"
+    },
+    {
+      "nodeIndex": 2,
+      "letter": "A",
+      "text": "improved text variant A for second node"
+    },
+    {
+      "nodeIndex": 2,
+      "letter": "B",
+      "text": "improved text variant B for second node"
+    },
+    {
+      "nodeIndex": 2,
+      "letter": "C",
+      "text": "improved text variant C for second node"
+    }
+  ]
+}
 ```
-1.A <variant 1 for first text>
-1.B <variant 2 for first text>
-1.C <variant 3 for first text>
-[... up to {{VARIANTS_COUNT}} variants]
 
-2.A <variant 1 for second text>
-2.B <variant 2 for second text>
-2.C <variant 3 for second text>
-[... up to {{VARIANTS_COUNT}} variants]
+**JSON Structure Rules:**
+- `variants`: Array containing all variant objects
+- `nodeIndex`: Number indicating which text node (1-based index, matches input order)
+- `letter`: Variant letter ("A", "B", "C", etc. - must match {{VARIANTS_COUNT}})
+- `text`: The improved text content (string)
 
-...and so on for all texts
-```
+**CRITICAL JSON FORMATTING RULES:**
 
-**Formatting Rules:**
-- Start each line: `[NUMBER].[LETTER] [content]`
-- ONE space after the letter-dot
-- Output ONLY the improved text (no labels, IDs, colons, quotes, or layer names)
-- Blank line between text groups for readability
-- Process ALL texts in order listed
+1. **Your ENTIRE response must be valid JSON**
+   - No text before the opening `{`
+   - No text after the closing `}`
+   - No markdown code blocks (```json)
+   - No explanations or comments
+
+2. **Escape special characters properly:**
+   - Double quotes inside text: `\"`
+   - Backslashes: `\\`
+   - Newlines: `\n`
+   - Tabs: `\t`
+
+3. **Generate exactly {{VARIANTS_COUNT}} variants per node**
+   - If 3 variants requested and 2 nodes provided → 6 total variants
+   - Order by nodeIndex: all variants for node 1, then all for node 2, etc.
+
+4. **Preserve all formatting:**
+   - Line breaks as `\n`
+   - Bullet points with their symbols
+   - Paragraph spacing
+   - Emoji and special characters
 
 ## CRITICAL: Multi-Line Preservation ⚠️
 
@@ -39,222 +87,145 @@ Use this exact format:
 This is a common error - avoid it:
 
 ❌ **WRONG** (condensed):
-```
-Original (3 lines):
-"Simpan perubahan?
-Perubahan belum tersimpan akan hilang.
-Lanjutkan?"
-
-Bad output:
-1.A Simpan perubahan? Perubahan belum tersimpan akan hilang. Lanjutkan?
+```json
+{
+  "text": "Simpan perubahan? Perubahan belum tersimpan akan hilang. Lanjutkan?"
+}
 ```
 
-✅ **CORRECT** (preserved):
-```
-1.A Simpan perubahan?
-Perubahan belum tersimpan akan hilang.
-Lanjutkan?
+✅ **CORRECT** (preserved with `\n`):
+```json
+{
+  "text": "Simpan perubahan?\nPerubahan belum tersimpan akan hilang.\nLanjutkan?"
+}
 ```
 
 **Always preserve:**
-- Line breaks (`\n`)
+- Line breaks using `\n` character
 - Bullet points (•, -, *, 📚, etc.) and numbered lists
-- Paragraph separation
+- Paragraph separation with `\n\n`
 - Dialog/modal structures
 - Multi-step instructions
 - Empty lines for spacing
 
 **Example with bullets:**
-```
+
 Original:
+```
 📚 Get 3 copy suggestions per UI element
 📚 Add specific context to make it sharper
 📚 Review and rephrase your placeholder texts
+```
 
-Correct:
-1.A 📚 Dapatkan 3 saran salinan untuk setiap elemen antarmuka
-📚 Tambahkan konteks spesifik agar lebih tajam
-📚 Tinjau dan perbaiki teks placeholder Anda
+Correct JSON:
+```json
+{
+  "nodeIndex": 1,
+  "letter": "A",
+  "text": "📚 Dapatkan 3 saran salinan untuk setiap elemen antarmuka\n📚 Tambahkan konteks spesifik agar lebih tajam\n📚 Tinjau dan perbaiki teks placeholder Anda"
+}
+```
+
+**Example with dialog:**
+
+Original:
+```
+Konfirmasi Hapus
+
+Yakin ingin menghapus item ini?
+Tindakan ini tidak dapat dibatalkan.
+```
+
+Correct JSON:
+```json
+{
+  "nodeIndex": 1,
+  "letter": "A",
+  "text": "Konfirmasi Hapus\n\nYakin ingin menghapus item ini?\nTindakan ini tidak dapat dibatalkan."
+}
 ```
 
 ## CONTEXT-AWARE PROCESSING
 
-Use the context information provided for each text:
+Consider the hierarchy and context of each text:
 
-### Hierarchy Depth (indicates importance level)
+**Headlines** (depth: 1-2):
+- Strong, action-oriented
+- Concise (≤8 words for main headlines)
+- Set clear expectations
 
-- **depth: 0-1** → Headlines, primary CTAs
-  - Use strong, attention-grabbing language
-  - Direct and impactful
-  - Clear call to action
+**Helper Text** (depth: 3+):
+- Supportive, clarifying details
+- Match parent element's tone
+- Add necessary context without redundancy
 
-- **depth: 2-3** → Section headers, secondary actions
-  - Use clear, organizing language
-  - Balanced and structured
-  - Guide user through interface
+**In Lists or Groups**:
+- Ensure consistency across sibling items
+- Respect hierarchy (don't make child text more prominent than parent)
 
-- **depth: 4+** → Helper text, tertiary content
-  - Use supportive, detailed language
-  - Explanatory and informative
-  - Provide context and assistance
+## GUIDELINE COMPLIANCE
 
-### Parent Container (indicates UI element type)
+Remember the strict hierarchy:
+1. 📚 **Reference Standards** (highest) - terminology, formats
+2. 🏛️ **Foundation Guidelines** - core principles
+3. 👥 **Tribe Execution** - audience tone (can override Foundation for tone only)
+4. 🤖 **Feature Guidelines** - context constraints
 
-- **Button, Link** → Action-oriented, concise, concrete verbs
-- **Dialog, Modal** → Clear decision context, explain consequences
-- **Toast, Snackbar** → Brief, informative, status updates
-- **Empty State** → Encouraging, actionable, opportunity framing
-- **Error Message** → Specific problem, actionable solution, empathetic tone
-- **Form Field** → Clear expectation, helpful placeholder/label
+## COMPLETE EXAMPLE
 
-## VARIANT GENERATION STRATEGY
+**Input:**
+```
+Text Node 1: "Save changes?"
+Text Node 2: "Your session will expire soon\nPlease save your work"
+```
 
-Generate {{VARIANTS_COUNT}} distinct variants offering different approaches:
+**Your Response (ENTIRE response, nothing else):**
+```json
+{
+  "variants": [
+    {
+      "nodeIndex": 1,
+      "letter": "A",
+      "text": "Simpan perubahan?"
+    },
+    {
+      "nodeIndex": 1,
+      "letter": "B",
+      "text": "Apakah ingin menyimpan perubahan?"
+    },
+    {
+      "nodeIndex": 1,
+      "letter": "C",
+      "text": "Simpan data yang telah diubah?"
+    },
+    {
+      "nodeIndex": 2,
+      "letter": "A",
+      "text": "Sesi Anda akan segera berakhir\nHarap simpan pekerjaan Anda"
+    },
+    {
+      "nodeIndex": 2,
+      "letter": "B",
+      "text": "Sesi hampir habis\nSimpan pekerjaan untuk menghindari kehilangan data"
+    },
+    {
+      "nodeIndex": 2,
+      "letter": "C",
+      "text": "Waktu sesi terbatas\nSegera simpan untuk mencegah data hilang"
+    }
+  ]
+}
+```
 
-### Vary by Tone (as allowed by Tribe Execution rules)
+## VALIDATION CHECKLIST
 
-- **Formal/Professional**: Precise, respectful, authoritative
-- **Balanced/Standard**: Clear, friendly, approachable
-- **Accessible/Casual**: Conversational, empathetic, warm (if tribe allows)
-
-### Vary by Focus
-
-- **Action-Oriented**: Emphasizes what user should do
-- **Benefit-Focused**: Highlights value and outcomes
-- **Empathetic**: Acknowledges user feelings and context
-
-### Vary by Structure
-
-- **Direct**: Straightforward statement or command
-- **Explanatory**: Provides context and reasoning
-- **Question-Based**: Engages user with questions (when appropriate)
-
-**All variants must:**
-- Follow the same guidelines (Reference, Foundation, Tribe Execution, Features)
-- Preserve the same meaning and facts
-- Be production-ready and complete
-- Pass all compliance checks
-
-## MANDATORY PRE-OUTPUT VALIDATION
-
-For EACH variant, verify before outputting:
-
-### Language & Grammar Compliance
-- [ ] 100% Bahasa Indonesia (KBBI/PUEBI compliant)
-- [ ] No English words (unless glossary-approved)
-- [ ] Grammatically correct and natural sounding
-
-### Guideline Compliance
-- [ ] **Terminology**: All terms match glossary
-  - Required terms used correctly
-  - Forbidden terms completely eliminated
-- [ ] **Formats**: Follow Reference/style-standards.md exactly
-  - Dates: per specified format
-  - Times: per specified format (include timezone if required, e.g., "14.30 WIB")
-  - Numbers: per specified format (thousands separator, decimals)
-  - Currency: per specified format (e.g., "Rp" with proper spacing)
-- [ ] **Tone**: Matches Tribe Execution user profile
-  - Formal vs balanced vs casual (as specified)
-- [ ] **Addressing**: Correct per Tribe rules
-  - Kamu vs Anda vs other forms
-  - Consistent throughout related elements
-
-### Structure Preservation
-- [ ] Multi-line structure NOT condensed
-- [ ] Placeholders intact: `{var}`, `{{var}}`, `%s`, `$variable`, etc.
-- [ ] Markup preserved: `<b>`, `<i>`, `*`, `**`, etc.
-- [ ] Code/keys/IDs unchanged: `error_code_404`, `api_key`, etc.
-- [ ] Bullet points and list formatting maintained
-
-### Quality Standards
-- [ ] Meaning preserved (no invented features or data)
-- [ ] Facts accurate (no altered numbers, dates, or promises)
-- [ ] Clarity appropriate for target audience
-- [ ] Actionable (especially for errors and CTAs - provide clear next steps)
-- [ ] Character limits respected (if specified in context)
-
-## SPECIAL HANDLING BY TEXT TYPE
-
-### Error Messages
-- Explain what happened clearly (avoid technical jargon)
-- Provide specific, actionable next steps
-- Use empathetic tone (as allowed by Tribe rules)
-- Include helpful details (what to check, who to contact)
-
-**Example variants:**
-- Variant A: Technical/precise → "Koneksi ke server gagal. Periksa jaringan Anda."
-- Variant B: Balanced clarity → "Tidak dapat terhubung. Periksa koneksi internet Anda dan coba lagi."
-- Variant C: Empathetic → "Sepertinya ada masalah dengan koneksi. Periksa jaringan Anda dan kami akan coba lagi."
-
-### Call-to-Action (CTA) Buttons
-- Use concrete action verbs
-- Keep concise (2-4 words typically)
-- Make outcome clear
-- Create urgency when appropriate
-
-**Example variants:**
-- Variant A: Action-focused → "Simpan Perubahan"
-- Variant B: Benefit-focused → "Simpan Progres Saya"
-- Variant C: Encouraging → "Ya, Simpan"
-
-### Empty States
-- Acknowledge the empty state
-- Explain why it's empty (if not obvious)
-- Provide clear action to resolve or begin
-
-**Example variants:**
-- Variant A: Informative → "Belum ada tugas. Guru akan menambahkan tugas di sini."
-- Variant B: Action-oriented → "Tidak ada tugas saat ini. Periksa lagi nanti atau hubungi guru."
-- Variant C: Opportunity → "Belum ada tugas! Gunakan waktu ini untuk mengulas materi."
-
-### Multi-Step Instructions
-- Maintain numbered or bulleted structure
-- Keep steps in logical order
-- Preserve step granularity (don't combine or split steps)
-- Ensure each step is actionable
-
-### Very Short Text (< 5 words)
-- Variants may be similar but with subtle differences
-- Focus on word choice and tone nuance
-- Ensure each variant is still distinct and valid
-
-## CONSISTENCY RULES FOR BATCH PROCESSING
-
-When processing multiple text nodes in a single batch:
-
-- **Maintain consistent tone** across related UI elements in the same flow
-- **Use glossary terms uniformly** throughout (don't vary terminology)
-- **Respect visual hierarchy** (headlines should feel more prominent than body text)
-- **Consider user flow sequence** (text should make sense in the order presented)
-
-## FINAL COMPLIANCE SWEEP
-
-Before submitting your output, perform one final check across ALL variants:
-
-1. **Language scan**: Any English words? → Replace with Bahasa Indonesia
-2. **Format verification**: Dates/times/numbers/currency correct? → Standardize per guidelines
-3. **Addressing consistency**: Kamu/Anda usage consistent? → Unify per Tribe rules
-4. **Multi-line check**: Line breaks preserved? → Restore if condensed
-5. **Placeholder verification**: All `{variables}` and markup intact? → Fix if broken
-6. **Forbidden terms scan**: Any forbidden terms? → Replace with required alternatives
-
-## OUTPUT DISCIPLINE
-
-**Output ONLY the formatted variants:**
-- No preamble or introduction
-- No explanations or reasoning
-- No commentary or notes
-- No quotes around the text
-- No labels like "Text:", "Content:", "Improved:"
-- No layer names, element IDs, or technical metadata
-
-Process ALL texts in order before outputting. Your output should be pure, formatted variants ready for direct use in the UI.
-
-## REMEMBER
-
-- **Speed AND quality**: Process efficiently but maintain all standards
-- **Independence**: Each variant should stand alone as a complete option
-- **Format precision**: Follow `number.letter` format exactly
-- **User first**: Every variant must serve user needs effectively
-- **Multi-line preservation**: NEVER condense multi-line text into single lines
-- **Guideline hierarchy**: Reference > Foundation > Tribe Execution > Features
+Before responding, verify:
+- [ ] Response is ONLY valid JSON (no text outside)
+- [ ] Exactly {{VARIANTS_COUNT}} variants per node
+- [ ] All special characters properly escaped
+- [ ] Multi-line text uses `\n` correctly
+- [ ] nodeIndex matches input order (1-based)
+- [ ] Letters are sequential (A, B, C, ...)
+- [ ] All guidelines followed (Reference > Foundation > Tribe > Feature)
+- [ ] Each variant offers different approach
+- [ ] All text is proper Bahasa Indonesia (KBBI/PUEBI)
