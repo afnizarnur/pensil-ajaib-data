@@ -79,6 +79,7 @@ DO NOT use terms or references that conflict with these regulations.
 - **Riwayat Pendidikan** → ❌ History pendidikan
 - **Akun Pendidikan** → ❌ Education account
 - **Pendidikan Jarak Jauh** → ❌ Distance Learning
+- **Papan Informasi** → ❌ Pengumuman
 
 ### Content Types
 - **Materi** → ❌ Konten
@@ -117,5 +118,6 @@ DO NOT use terms or references that conflict with these regulations.
 - **Guru** → ❌ Teacher
 - **Kontributor** → ❌ Contributor
 - **Kurator** → ❌ Curator
+
 
 
