@@ -6,7 +6,7 @@ icon: "https://raw.githubusercontent.com/afnizarnur/pensil-ajaib-data/main/Core%
 
 # 📄 Ruang Murid Copy Guideline — MURID (STRICT)
 _Product Context - Always Active_
-_Last updated: 11 Sept 2025_
+_Last updated: 18 Nov 2025_
 
 ## Product Overview & Positioning
 Ruang Murid adalah **bagian dari Rumah Pendidikan** yang dikembangkan oleh **Kemendikdasmen**.
@@ -118,6 +118,7 @@ DO NOT use terms or references that conflict with these regulations.
 - **Guru** → ❌ Teacher
 - **Kontributor** → ❌ Contributor
 - **Kurator** → ❌ Curator
+
 
 
 
