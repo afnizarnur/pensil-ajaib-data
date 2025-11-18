@@ -61,6 +61,7 @@ Teachers focus on **teaching effectiveness, student outcomes, professional devel
 ### Efficiency Focus
 - [GUR-AUD-05] **Value proposition:** Frame actions as low-effort, high-benefit
   - Example: "Dengan sekali klik, Anda dapat mengakses 50+ materi siap ajar"
+- [GUR-AUD-07] Structure information pattern from [function/main action] + [output/immediate benefit] + [impact/emotional benefit]
 
 ## Example Applications
 
@@ -84,4 +85,5 @@ Teachers focus on **teaching effectiveness, student outcomes, professional devel
 - "Berdasarkan pengalaman mengajar Anda..."
 - "Sebagai pendidik profesional, Anda tentunya..."
 - "Dengan keahlian Anda di bidang pendidikan..."
+
 
