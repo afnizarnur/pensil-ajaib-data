@@ -26,6 +26,20 @@ All copy MUST comply with national regulations:
 
 DO NOT use terms or references that conflict with these regulations.
 
+## Non-Negotiable Principles
+- All copy MUST be written in **Bahasa Indonesia** following KBBI.
+- DO NOT use English words, slang, or mixed-language text.
+- All onboarding flows MUST be tailored to specific user types:
+  - Murid = learning focus
+  - Guru = teaching focus
+  - Mitra Kolaborasi = partnering with Ruang Murid focus
+  - Unit Kerja = understanding how Ruang Murid works focus (often for training teachers or using CMS)
+- You MUST ALWAYS apply glossary terms consistently.
+- All copy MUST be inclusive (region, gender, background).
+- You MUST ALWAYS write with empathy, NEVER with blame.
+- You MUST ensure sufficient contrast between styles for different user groups.
+- You MUST write to guide actions by SHOWING BENEFITS, not explaining features or the system
+
 ## Platform-Specific Navigation Terms
 - **Beranda** → ❌ Homepage, Halaman Utama
 - **Website Ruang Murid** → ❌ Platform Ruang Murid
@@ -42,6 +56,18 @@ DO NOT use terms or references that conflict with these regulations.
 - **Inclusive**: Serve diverse Indonesian regions and backgrounds
 - **Supportive**: Never blame users for difficulties
 - **Progressive**: Encourage continuous learning improvement
+
+## Tone of Voice
+- [TONE-01] You MUST always be **Direct & Clear**. DO NOT write vague text.
+  - Example: "Klik tombol 'Mulai' untuk lanjut."
+- [TONE-02] You MUST always be **Supportive**. DO NOT use blaming or condescending language.
+  - Example: "Tenang, kamu bisa mulai dari sini."
+- [TONE-03] You MUST be **Encouraging**. Always promote progress, NOT perfection.
+  - Example: "Setiap langkah kecilmu berarti."
+- [TONE-04] You MUST ALWAYS be **Inclusive**. DO NOT use slang, DO NOT assume gender or region.
+- [TONE-05] You MUST ALWAYS be **Translational**, not transactional. DO NOT use technical jargon without explaining the context in daily life.
+   - Example: “Pilih capaian dan tujuan pembelajaran sesuai kelas Anda (CP dan TP).”
+
 
 ## Core Glossary (Critical Terms)
 
@@ -91,4 +117,5 @@ DO NOT use terms or references that conflict with these regulations.
 - **Guru** → ❌ Teacher
 - **Kontributor** → ❌ Contributor
 - **Kurator** → ❌ Curator
+
 
