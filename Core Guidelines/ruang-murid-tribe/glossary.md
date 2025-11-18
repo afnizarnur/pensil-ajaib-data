@@ -167,6 +167,9 @@ _Last updated: 11 Sept 2025_
 - [GLO-117] **Lolos Kurasi** → ❌ Approved (status materi yang sudah disetujui)
 - [GLO-118] **Tolak Materi** → ❌ Reject Content (menolak materi yang diajukan)
 - [GLO-119] **Terbit** → ❌ Publish (menerbitkan materi agar dapat diakses public)
+- [GLO-120] **Admin Organisasi** → ❌ Admin Institusi (tempat Kurator bernaung)
+- [GLO-121] **Admin Super** → ❌ Admin Internal (pihak yang menugaskan admin institusi)
+
 
 ## 🔍 Pencarian & Eksplorasi  
 - [GLO-120] **Eksplorasi** → ❌ Browse, Explore (menjelajahi konten)
