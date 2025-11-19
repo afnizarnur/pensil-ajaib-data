@@ -40,16 +40,6 @@ DO NOT use terms or references that conflict with these regulations.
 - You MUST ensure sufficient contrast between styles for different user groups.
 - You MUST write to guide actions by SHOWING BENEFITS, not explaining features or the system
 
-## Platform-Specific Navigation Terms
-- **Beranda** → ❌ Homepage, Halaman Utama
-- **Website Ruang Murid** → ❌ Platform Ruang Murid
-- **Mulai Eksplorasi** → ❌ Start, Begin
-- **Fitur Pencarian** → ❌ Search Feature
-- **Halaman/Laman** → ❌ Website
-- **Tautan** → ❌ Link
-- **Cari** → ❌ Search
-- **Bagikan** → ❌ Share, Sebar
-
 ## Ruang Murid Brand Voice Nuances
 - **Learning-focused**: Always frame around educational outcomes
 - **Government-appropriate**: Maintain formal yet accessible tone
@@ -80,6 +70,8 @@ DO NOT use terms or references that conflict with these regulations.
 - **Akun Pendidikan** → ❌ Education account
 - **Pendidikan Jarak Jauh** → ❌ Distance Learning
 - **Papan Informasi** → ❌ Pengumuman
+- **Website Ruang Murid** → ❌ Platform Ruang Murid
+- **Fitur Pencarian** → ❌ Search Feature
 
 ### Content Types
 - **Materi** → ❌ Konten
@@ -112,12 +104,19 @@ DO NOT use terms or references that conflict with these regulations.
 - **Muat Ulang** → ❌ Refresh
 - **Salin** → ❌ Copy
 - **Sistem** → ❌ Platform
+- **Beranda** → ❌ Homepage, Halaman Utama
+- **Halaman/Laman** → ❌ Website
+- **Tautan** → ❌ Link
+- **Cari** → ❌ Search
+- **Bagikan** → ❌ Share, Sebar
+
 
 ### Users & Roles
 - **Murid** → ❌ Siswa, Siswi
 - **Guru** → ❌ Teacher
 - **Kontributor** → ❌ Contributor
 - **Kurator** → ❌ Curator
+
 
 
 
