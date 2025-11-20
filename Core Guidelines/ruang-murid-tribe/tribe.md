@@ -1,5 +1,5 @@
 ---
-displayName: "Ruang Murid"
+displayName: "Murid"
 status: "published"
 icon: "https://raw.githubusercontent.com/afnizarnur/pensil-ajaib-data/main/Core%20Guidelines/ruang-murid-tribe/icon.svg"
 ---
@@ -116,6 +116,7 @@ DO NOT use terms or references that conflict with these regulations.
 - **Guru** → ❌ Teacher
 - **Kontributor** → ❌ Contributor
 - **Kurator** → ❌ Curator
+
 
 
 
