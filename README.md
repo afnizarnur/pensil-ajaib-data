@@ -1,8 +1,8 @@
-# PENSILAJAIB — Copy Guidelines for Ruang Murid (Figma Plugin)
-_Last updated: 18 Nov 2025_
 
 This repository contains the **authoritative copy guidelines** for PENSILAJAIB Figma Plugin.  
-All files here are treated as references for generating and validating content.o 
+All files here are treated as references for generating and validating content.
+
+**Current Implementation:** Ruang Murid tribe (Phase 1)
 
 ---
 
@@ -10,152 +10,182 @@ All files here are treated as references for generating and validating content.o
 
 When multiple sources exist, always follow this strict priority order:
 
-0. **Legal Compliance** → Landasan Hukum (PP No. 57/2021, UU No. 20/2003, Permendikbudristek No. 8/2024, No. 119/2014) overrides ALL other rules
-1. **Reference Standards** → `Reference/style-standards.md`, `Reference/error-templates.md`
-2. **Core Guidelines** → `Core Guidelines/general-foundation.md`, `Core Guidelines/ruang-murid-tribe/tribe.md`, `Core Guidelines/ruang-murid-tribe/glossary.md`
-3. **Execution Rules** → `Core Guidelines/ruang-murid-tribe/user/murid.md`, `guru.md`, `mitra.md`, `unit-kerja.md`
-4. **Feature Guidelines** → `Feature Guidelines/ai-powered-features.md`
-5. **UI Components** → `Reference/ui-component-specs.md`, `Reference/error-templates.md`
-6. **User-provided references** (links, published docs, or pasted material)
-7. **Examples** → `Examples/component-copy-samples.md`, `dialog-examples.md`, `onboarding-samples.md`, `toast-message-library.md`
-8. **Fallback principles** → clarity, empathy, inclusivity
+**Priority Order (0 = highest authority, 6 = lowest):**
+
+### 0. ⚠️ Legal Compliance (OVERRIDES ALL)
+- **Source:** `Core Guidelines/ruang-murid-tribe/tribe.md` (Legal Compliance section)
+- **Mandatory:** Bahasa Indonesia requirement (KBBI/PUEBI)
+
+### 1. 📚 Reference Standards (Terminology & Style)
+- `Reference/style-standards.md` - Formatting, numbers, dates, capitalization
+- `Core Guidelines/ruang-murid-tribe/glossary.md` - Official terminology (GLO-XXX codes)
+- `Reference/error-templates.md` - Error message patterns
+- `Reference/ui-component-specs.md` - Component specifications
+
+### 2. 🏛️ Foundation Guidelines (Core Principles)
+- `Core Guidelines/general-foundation.md` - Universal principles, tone meters
+- `Core Guidelines/ruang-murid-tribe/tribe.md` - Ruang Murid context, brand voice
+
+### 3. 👥 Tribe Execution (Audience-Specific)
+- `Core Guidelines/ruang-murid-tribe/user/murid.md` - Student-focused
+- `Core Guidelines/ruang-murid-tribe/user/guru.md` - Teacher-focused
+- `Core Guidelines/ruang-murid-tribe/user/mitra.md` - Partner-focused
+- `Core Guidelines/ruang-murid-tribe/user/unit-kerja.md` - Work unit-focused
+- Note: Plugin provides {{AUDIENCE_TYPE}} to select correct file
+
+### 4. 🤖 Feature Guidelines (Context-Specific Constraints)
+- `Feature Guidelines/ai-powered-features.md`
+
+### 5. 🎨 UI Components (Inferred from Layer Metadata)
+- `Reference/ui-component-specs.md`
+- Component type detected from Figma layer names
+
+### 6. 💡 Fallback Principles (Always Active)
+- Clarity, empathy, inclusivity, actionability, accessibility
 
 ---
 
 ## Conflict Resolution
 
-If two sources give different guidance:
+When guidelines from different priorities conflict:
 
-| Situation | Which Wins | What To Do |
-|-----------|------------|-------------|
-| **Legal vs Anything** | **Legal Compliance (Priority 0)** | ⚠️ **CRITICAL**: Always follow Landasan Hukum. Immediately flag conflict in output with: **"⚠️ LEGAL CONFLICT: [brief issue] - Applied legal requirement over [conflicting source]."** |
-| Glossary vs Execution doc | **Core Guidelines/ruang-murid-tribe/glossary.md (Priority 2)** | Use glossary term from Priority 2. Flag discrepancy if entirely different content. |
-| Style vs Execution doc | **Reference/style-standards.md (Priority 1)** | Style overrides tone/voice. Adapt execution nuance if needed. |
-| Execution vs Foundation | **Execution doc (Priority 3)** | Audience-specific rules override global foundation (Priority 2). |
-| Feature vs Execution/Foundation | **Execution/Foundation (Priority 2-3)** | Use execution rules unless feature introduces legal/technical constraint. |
-| UI Component vs Other sources | **Follow hierarchy** | UI specs are Priority 5. Check higher priorities (0-4) first. |
-| User-provided reference vs Repo guideline | **Repo guideline (Priority 1-5)** | Follow repo guidelines. Flag discrepancy even if user reference is more recent: "User reference differs from official guide — following guide per hierarchy." |
-| Example vs Reference doc | **Reference doc (Priority 1-6)** | Examples are illustrative only. |
-| Incomplete/contradictory guidelines | **Rule Hierarchy (0-8)** | Follow priority order. If still unclear after checking all priorities, flag as **"INCOMPLETE GUIDANCE"** and use fallback principles. |
+### Primary Rule: Lower Number Wins
+Priority 0 > Priority 1 > Priority 2 > Priority 3 > Priority 4 > Priority 5 > Priority 6
+
+### Dimension-Specific Overrides:
+
+**Terminology & Word Choice:**
+- Priority 1 (📚 Glossary) ALWAYS wins
+- No exceptions - glossary term overrides all others for word choice
+- Adjust capitalization to fit sentence structure (not from glossary)
+
+**Formality & Pronouns:**
+- Priority 3 (👥 Tribe Execution) wins over Priority 2 (🏛️ Foundation)
+- Audience-specific formality (Anda vs kamu) overrides general brand voice
+
+**Character Limits:**
+- Priority 5 (🎨 UI Component Specs) wins over Priority 1 (📚 Style Standards)
+- Component-specific limits are stricter
+
+**Tone & Emotional Expression:**
+- Priority 3 (👥 Tribe Execution) wins over Priority 2 (🏛️ Foundation)
+- Balance with Priority 5 (🎨 Component Type) - e.g., errors stay clear even if audience prefers friendly
+
+### Resolution Examples:
+
+| Conflict | Resolution | Winner |
+|----------|------------|--------|
+| Glossary says "pembelajaran", Murid execution prefers "belajar" | Use "pembelajaran" | 📚 Priority 1 |
+| Style says "Anda", Murid execution says "kamu" | Use "kamu" | 👥 Priority 3 |
+| Style says ≤25 chars, UI spec says ≤20 chars (button) | Use ≤20 chars | 🎨 Priority 5 |
+
+### When Still Unclear:
+Ask: "Which choice makes the user's task clearer/easier?" → Choose that one (Priority 6 💡)
 
 ---
 
-## Usage Guidelines
+## UI Component Types & Character Limits
 
-### For Figma Plugin Implementation:
+**Refer to `Reference/ui-component-specs.md`** for the strict character limits and component codes.
+**Component Detection:** AI infers component type from Figma `layerName` keywords (see System Prompt for detection rules)
+**Enforcement:**
+- ALL variants must stay within limit
+- If can't fit: Use shortest grammatical form
+- Strategies: Remove redundancy, shorter synonyms, remove articles
+---
 
-1. **Legal Compliance Gate (Priority 0)**  
-   → Verify content does not conflict with Landasan Hukum.  
-   → **If conflict detected, MUST flag in output before proceeding.**
+## Glossary Term Usage
 
-2. **Reference Standards (Priority 1)**  
-   → Use `Core Guidelines/ruang-murid-tribe/glossary.md` (show GLO-XXX codes as source)  
-   → Apply `Reference/style-standards.md` for formatting
+**Source:** `Core Guidelines/ruang-murid-tribe/glossary.md`
 
-3. **Core Guidelines (Priority 2)**  
-   → Apply `Core Guidelines/general-foundation.md` and `Core Guidelines/ruang-murid-tribe/tribe.md` for context
+**Rules:**
+- Use exact glossary term for **word choice/meaning**
+- **Adjust capitalization** to fit sentence structure:
+  - Sentence start: Capitalize first letter
+  - Mid-sentence: Lowercase (unless proper noun)
+  - Title case: Follow `Reference/style-standards.md` rules
 
-4. **Execution Rules (Priority 3)**  
-   → User specifies audience (Murid/Guru/Mitra/Unit Kerja)  
-   → Use corresponding file in `Core Guidelines/ruang-murid-tribe/user/`
+**Example:**
+- Glossary: "pembelajaran" (GLO-023)
+- Sentence start: "Pembelajaran dimulai pukul 08.00"
+- Mid-sentence: "Mulai pembelajaran sekarang"
+- Title: "Panduan Pembelajaran"
 
-5. **Feature Guidelines (Priority 4)**  
-   → Check `Feature Guidelines/ai-powered-features.md` for platform-specific constraints
+**If term not in glossary:** Use proper KBBI/PUEBI Indonesian, do not flag as error.
 
-6. **UI Components (Priority 5)**  
-   → Reference `Reference/ui-component-specs.md` and `Reference/error-templates.md` for technical specifications
-
-7. **Examples (Priority 7)**  
-   → Use files in `Examples/` folder for implementation patterns
-
-8. **Handle Conflicts**  
-   → Follow hierarchy table above  
-   → Always flag legal conflicts prominently
-
-### Implementation Notes:
-
-- **Legal Conflict Flagging**: Any discrepancy between legal requirements and other guidelines MUST be flagged in output with clear explanation
-- **User Type Selection**: Users must specify target audience (no multi-audience content)
-- **Dynamic Content**: Handle case-by-case based on user prompts
-- **Character Limits**: Check UI component specifications for specific constraints
-- **Missing Files**: Flag if required files are unavailable: **"MISSING SOURCE FILE: [filename]"**
-- **Source Citations**: Show all reference codes (GLO-XXX, Priority X, etc.) only when flagging issues
+**Consistency:** If same concept appears in multiple text nodes, use SAME glossary term across all nodes.
 
 ---
 
 ## Repository Structure
 
-This structure reflects GitHub SSOT for dynamic plugin access:
-
 ### Core Guidelines
-Foundation principles and execution rules:
 - `general-foundation.md` — Legal basis, core principles, tone standards
 - `ruang-murid-tribe/`
-  - `tribe.md` — Platform context and tribal knowledge
-  - `glossary.md` — Complete terminology glossary (GLO-001 to GLO-122)
+  - `tribe.md` — Platform context, legal compliance section
+  - `glossary.md` — Complete terminology (GLO-001 to GLO-XXX)
   - `user/`
-    - `murid.md` — Student-focused copy execution
-    - `guru.md` — Teacher-focused copy execution  
-    - `mitra.md` — Partner/contributor execution
+    - `murid.md` — Student execution, tone meters, behavioral insights
+    - `guru.md` — Teacher execution
+    - `mitra.md` — Partner execution
     - `unit-kerja.md` — Work unit execution
 
-### Reference  
-Standards and terminology enforcement:
+### Reference
 - `style-standards.md` — Formatting, time, currency rules
-- `ui-component-specs.md` — UI component specifications
+- `ui-component-specs.md` — UI component specifications, character limits
 - `error-templates.md` — Error message templates
 
 ### Feature Guidelines
-Platform-specific rules:
 - `ai-powered-features.md` — AI feature guidelines and constraints
 
 ### Examples
-Practical implementation samples:
-- `onboarding-samples.md` — User onboarding flows
-- `dialog-examples.md` — Dialog and confirmation examples  
-- `toast-message-library.md` — Toast/snackbar message library
 - `component-copy-samples.md` — UI component copy samples
+- `dialog-examples.md` — Dialog and confirmation examples
+- `onboarding-samples.md` — User onboarding flows
+- `toast-message-library.md` — Toast/snackbar message library
+
+**Use examples:**
+- AFTER generating variant with hierarchy rules
+- For structure/format reference only
+- Adapt, don't copy verbatim
+
+**Don't use examples:**
+- If conflicts with glossary (📚 Priority 1 wins)
+- If conflicts with audience tone (👥 Priority 3 wins)
+- As substitute for hierarchy rules
 
 ---
 
-## Quality Assurance & Heuristic Review
+## Quality Assurance & Validation
 
-All outputs must pass two validation layers:
-
-### ⚙️ System Validation (Objective Checks)
+### System Validation (Objective Checks)
 
 | Category | Checkpoint | Expected Behavior |
 |-----------|-------------|------------------|
-| **Legal Compliance** | Output must not violate Landasan Hukum (PP No. 57/2021, UU No. 20/2003, Permendikbudristek No. 8/2024, No. 119/2014). | ⚠️ If conflict detected → flag: **"⚠️ LEGAL CONFLICT: [brief issue] - Applied legal requirement over [conflicting source]."** |
-| **Terminology & Glossary** | Use official terms from `Core Guidelines/ruang-murid-tribe/glossary.md` (GLO-XXX). | All terminology consistent and valid. |
-| **Style & Formatting** | Follow `Reference/style-standards.md` (numbers, capitalization, time format, etc.). | No deviation from defined style rules. |
-| **Tone Alignment** | Match tone ratios defined in `Core Guidelines/general-foundation.md` → Tone & Voice Meters. | Example: Teacher = 7/10 Respectful, 3/10 Encouraging. |
-| **Audience Match** | Use audience-specific execution file (`murid.md`, `guru.md`, `mitra.md`, `unit-kerja.md`). | Do not mix audiences in one output. |
-| **File Integrity** | All referenced files exist and are accessible in the repository. | If missing → flag: **"MISSING SOURCE FILE: [path]"** |
+| **Legal Compliance** | No violation of Landasan Hukum, 100% Bahasa Indonesia | ⚠️ Flag: "LEGAL CONFLICT: [issue]" |
+| **Terminology** | Glossary terms used for word choice, capitalization adjusted | All terminology consistent |
+| **Style & Formatting** | Follow `style-standards.md` rules | No deviation |
+| **Tone Alignment** | Match tone meters from audience execution file | Example: Guru = 70% Respectful, 30% Encouraging |
+| **Audience Match** | Use correct audience file (murid/guru/mitra/unit-kerja) | No mixing audiences |
+| **Character Limits** | Respect component-specific limits | Enforced per UI component type |
+| **File Integrity** | All referenced files accessible | Flag: "MISSING SOURCE FILE: [path]" |
 
-**Note:** Structural Completeness validation not applicable — plugin outputs final copy only, not multi-part responses.
-
----
-
-### 💬 Heuristic Validation (UX Writer's Lens)
-
-Use these questions to evaluate if output "feels right" to humans:
+### Heuristic Validation (UX Quality)
 
 | Dimension | Guiding Question | Ideal Outcome |
 |------------|------------------|----------------|
-| **Clarity** | Can users understand the message in one read? | Short sentences (<20 words), one idea per sentence. |
-| **Empathy** | Does the tone consider the user's mindset and emotional state? | Supportive, non-patronizing, solution-oriented. |
-| **Relevance** | Does the content directly help users complete their task? | No filler; actionable and purpose-driven. |
-| **Inclusivity** | Is the language neutral, bias-free, and compliant with KBBI/PUEBI? | No gendered or exclusionary phrases. |
-| **Accessibility** | Is it easy to read and free from jargon or nested phrasing? | Readability ≈ Grade 8 level; mostly active voice. |
-| **Consistency** | Does tone and structure remain uniform across UI elements? | Matches reference patterns in `Examples/` or `Reference/ui-component-specs.md`. |
-| **Tone Effectiveness** | Does the tone match the context (e.g., success, error, info)? | Adheres to tone meter; no exaggeration. |
-| **Actionability** | Is the next step obvious after reading? | CTA is clear, relevant, and context-specific. |
-| **Human Touch** | Does it sound natural and empathetic, not mechanical? | Human rhythm, warm yet concise phrasing. |
+| **Clarity** | Understand in one read? | Sentences <20 words, one idea per sentence |
+| **Empathy** | Tone matches user's emotional state? | Supportive, non-patronizing, solution-oriented |
+| **Relevance** | Directly helps user's task? | Actionable, no filler |
+| **Inclusivity** | Neutral, bias-free per KBBI/PUEBI? | No gendered or exclusionary phrases |
+| **Accessibility** | Easy to read, no jargon? | Readability ≈ Grade 8 level, active voice |
+| **Consistency** | Uniform tone across elements? | Matches reference patterns |
+| **Actionability** | Next step obvious? | CTA is clear, context-specific |
+| **Human Touch** | Natural and empathetic? | Human rhythm, warm phrasing |
 
 ---
 
-### Implementation Behavior (Figma Plugin-Specific)
+## Implementation Behavior (Figma Plugin)
 
 **Validation Mode:**
 - Performs **silent validation** internally
@@ -167,24 +197,6 @@ Use these questions to evaluate if output "feels right" to humans:
 - Concise output format (no verbose explanations)
 - Legal conflict flags kept brief but clear
 - Source citations shown only when flagging issues
-
----
-
-## Support & Contributing
-
-For questions or updates to guidelines:
-
-1. Check existing files following the hierarchy (Priority 0-8)
-2. Reference conflict resolution matrix
-3. Maintain consistency with established patterns
-4. Follow Indonesian language standards (KBBI/PUEBI)
-5. **Flag any legal compliance issues immediately with Priority 0 override**
-
-### Contributing to Repository:
-- All changes must maintain hierarchy integrity
-- New guidelines must specify priority level (0-8)
-- Include conflict resolution rules for new guideline types
-- Update this README if new file categories are added
 
 ---
 
